@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Page } from "../page";
 import { SupportItem, SupportItemProps } from "./support-item";
 import styles from "./index.module.css";
-import Link from "next/link";
-import { useApp } from "../app-provider";
+import { useAppData } from "../app-provider";
 import { Callout } from "../callout";
 
 export interface SupportPageProps {
@@ -15,7 +14,7 @@ export function SupportPage({
 }: SupportPageProps) {
 
 	const [expandedItem, setExpandedItem] = useState<string | undefined>();
-	const { slug } = useApp();
+	const { slug } = useAppData();
 
 	return <Page>
 		<h1>Support</h1>

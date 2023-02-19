@@ -98,6 +98,7 @@ export function useFetch<T extends object>(
         setError(undefined);
       })
       .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return [data, data === undefined && error === undefined, error];
 }

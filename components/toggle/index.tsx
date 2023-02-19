@@ -2,7 +2,7 @@ import type { IconType } from "react-icons";
 import styles from "./index.module.css";
 import { IoCheckbox, IoSquareOutline } from "react-icons/io5";
 import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
-import clsx from "clsx";
+import { cx } from "#/lib/front/cx";
 
 export function Toggle({
 	value = false,
@@ -26,7 +26,7 @@ export function Toggle({
 
 	return <button
 		disabled={disabled}
-		className={clsx(styles.button, value && styles.enabled)}
+		className={cx(styles.button, value && styles.enabled)}
 		onClick={handleClick}
 	>
 		{Icon ? <Icon size={24} /> : null}

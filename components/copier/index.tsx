@@ -4,6 +4,7 @@ import styles from "./index.module.css";
 import { IoCopy } from "react-icons/io5";
 import { cx } from "#/lib/front/cx";
 import { IconType } from "react-icons";
+import { truncate } from "#/lib/front/truncate";
 
 export function Copier({
 	value,

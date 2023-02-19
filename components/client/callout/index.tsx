@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { useApp } from "../app-provider";
+import { useAppData } from "../app-provider";
 import styles from "./index.module.css";
 
 export function Callout() {
 
-	const { slug } = useApp();
+	const { slug } = useAppData();
 
 	return <div className={styles.container}>
 		<div>

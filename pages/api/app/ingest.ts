@@ -1,11 +1,9 @@
 import { supabase } from "#/db";
-import { Database } from "#/db/types";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { verifyUser } from "#/lib/api/token";
 import { verifyBody } from "#/lib/api/verify-body";
 import { assertNonEmpty } from "#/lib/assert-filled";
-import { fetcher } from "#/lib/fetcher";
 import {
   App,
   AppMeta,
@@ -47,12 +45,18 @@ export default createEndpoint<ApiResponseApp>({
     if (app.owner_id !== user.id)
       throw new APIError(400, "App does not exist.");
 
-    const { results } = await fetcher<AppleAppResponse>({
-      url: `https://itunes.apple.com/lookup?id=${appleId}`,
-      method: "GET",
-    });
+    const appleRes = await fetch(
+      `https://itunes.apple.com/lookup?id=${appleId}`,
+      {
+        method: "GET",
+      }
+    );
 
-    const appleApp = results[0];
+    if (!appleRes.ok)
+      throw new APIError(500, "Failed to talk with apple server.");
+    const appleResBody = (await appleRes.json()) as AppleAppResponse;
+
+    const appleApp = appleResBody.results[0];
     if (!appleApp) throw new APIError(400, `No app exists for id: '${appId}'.`);
 
     const { data, error } = await supabase
