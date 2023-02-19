@@ -28,13 +28,13 @@ export function Header() {
 	}, []);
 
 	return <header className={styles.header}>
-		<Link href='/' className={styles.title}>
+		<Link href='/about' className={styles.title}>
 			<Icon size={32} />
 			<h1>site4app</h1>
 		</Link>
 		<nav className={styles.nav}>
 			<div className={styles.links}>
-				<HeaderLink href='/' value='home' />
+				<HeaderLink href='/about' value='about' />
 				<HeaderLink href='/pricing' value='pricing' />
 				<HeaderLink href='/docs' value='docs' />
 			</div>
