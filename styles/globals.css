@@ -88,7 +88,7 @@ a:hover {
 }
 
 html {
-  width: 100vw;
+  overflow-x: hidden;
 }
 
 html,
@@ -97,5 +97,4 @@ body {
   color: var(--fg);
   font-family: var(--font);
   background: var(--bg);
-  overflow-x: hidden;
 }

@@ -3,7 +3,6 @@
   max-width: var(--bp-desktop);
   padding: 0 var(--sp2);
   margin: auto;
-  min-height: 60vh;
 }
 
 .container {
