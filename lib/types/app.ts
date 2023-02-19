@@ -52,17 +52,16 @@ export interface AppleApp {
   userRatingCount: number;
 }
 
+export type AppMeta = Database["public"]["Tables"]["app_meta"]["Row"];
 export type App = Database["public"]["Tables"]["app"]["Row"];
 
-export function appleAppToApp(
+export function appleAppToAppMeta(
   app: AppleApp,
-  owner_id: string,
-  slug: string
-): Database["public"]["Tables"]["app"]["Insert"] {
+  id: string
+): Database["public"]["Tables"]["app_meta"]["Insert"] {
   return {
-    owner_id,
-    slug,
-    app_id: `${app.trackId}`,
+    id,
+    apple_id: `${app.trackId}`,
     developer_id: `${app.artistId}`,
     name: app.trackName,
     developer: app.artistName,

@@ -41,9 +41,19 @@ export const clientGetStaticPropsWithFilter: (
       return { notFound: true };
     }
 
+    const { data: metaData, error: metaError } = await supabase
+      .from("app_meta")
+      .select()
+      .eq("id", app.id);
+    const meta = metaData?.[0];
+    if (metaError || !meta) {
+      return { notFound: true };
+    }
+
     return {
       props: {
         app,
+        meta,
       },
     };
   };

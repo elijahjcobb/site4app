@@ -2,14 +2,15 @@ import AppStoreBadge from "#/components/app-store-badge";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./index.module.css";
-import { useApp } from "../app-provider";
+import { useApp, useAppData, useAppMeta } from "../app-provider";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useCallback, useMemo, useState } from "react";
 import { MobileNav } from "./mobile-nav.index";
 
 export function Nav() {
 
-	const { slug, icon, name, app_id, enable_contact, enable_privacy, enable_support, enable_terms } = useApp();
+	const { slug, name, enable_contact, enable_privacy, enable_support, enable_terms } = useAppData();
+	const { icon, apple_id } = useAppMeta();
 	const [showMobileNav, setShowMobileNav] = useState(false);
 
 	const links = useMemo<string[]>(() => {
@@ -37,7 +38,7 @@ export function Nav() {
 				</Link>
 			</li>)}
 		</ul>
-		<Link className={styles.badge} href={`https://apps.apple.com/app/id${app_id}`}>
+		<Link className={styles.badge} href={`https://apps.apple.com/app/id${apple_id}`}>
 			<AppStoreBadge />
 		</Link>
 		<button onClick={toggleMobileNav} className={styles.hamburger}>

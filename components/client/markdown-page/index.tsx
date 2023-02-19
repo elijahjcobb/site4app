@@ -1,4 +1,5 @@
 import { Page } from "../page";
+import styles from "./index.module.css";
 
 export function MarkdownPage({
 	markdown,
@@ -9,6 +10,6 @@ export function MarkdownPage({
 }) {
 	return <Page>
 		<h1>{title}</h1>
-		<div dangerouslySetInnerHTML={{ __html: markdown }} />
+		<div className={styles.md} dangerouslySetInnerHTML={{ __html: markdown }} />
 	</Page>
 }

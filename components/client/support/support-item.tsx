@@ -1,6 +1,7 @@
 import styles from "./index.module.css";
 import { FaChevronDown as Arrow } from "react-icons/fa";
 import { cx } from "#/lib/front/cx";
+import mdStyles from "../markdown-page/index.module.css";
 
 export interface SupportItemProps {
 	id: string,
@@ -27,7 +28,7 @@ export function SupportItem({
 			opacity: isExpanded ? 1 : 0,
 			height: isExpanded ? "100%" : "0px"
 		}}>
-			<div className={styles.answer} dangerouslySetInnerHTML={{ __html: item.answer }} />
+			<div className={cx(styles.answer, mdStyles.md, mdStyles.smd)} dangerouslySetInnerHTML={{ __html: item.answer }} />
 		</div>
 	</li>
 }

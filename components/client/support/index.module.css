@@ -53,6 +53,6 @@
 }
 
 .bottom {
-  background: var(--acc2);
+  background: var(--bg);
   z-index: 1;
 }

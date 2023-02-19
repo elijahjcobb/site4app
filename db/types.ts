@@ -36,87 +36,101 @@ export interface Database {
     Tables: {
       app: {
         Row: {
-          age_restriction: string
-          app_id: string
           created_at: string
-          currency: string
-          description: string
-          developer: string
-          developer_id: string
           enable_contact: boolean
           enable_privacy: boolean
           enable_support: boolean
           enable_terms: boolean
+          id: string
+          name: string
+          owner_id: string
+          slug: string
+          theme: string | null
+        }
+        Insert: {
+          created_at?: string
+          enable_contact?: boolean
+          enable_privacy?: boolean
+          enable_support?: boolean
+          enable_terms?: boolean
+          id?: string
+          name: string
+          owner_id: string
+          slug: string
+          theme?: string | null
+        }
+        Update: {
+          created_at?: string
+          enable_contact?: boolean
+          enable_privacy?: boolean
+          enable_support?: boolean
+          enable_terms?: boolean
+          id?: string
+          name?: string
+          owner_id?: string
+          slug?: string
+          theme?: string | null
+        }
+      }
+      app_meta: {
+        Row: {
+          age_restriction: string
+          apple_id: string
+          currency: string
+          description: string
+          developer: string
+          developer_id: string
           formatted_price: string
           genre: string
           icon: string
           icon_small: string
           id: string
           name: string
-          owner_id: string
           price: number
           rating: number
           rating_count: number
           release_date: string
           screenshots: string[]
-          slug: string
-          theme: string | null
           version: string
         }
         Insert: {
           age_restriction: string
-          app_id: string
-          created_at?: string
+          apple_id: string
           currency: string
           description: string
           developer: string
           developer_id: string
-          enable_contact?: boolean
-          enable_privacy?: boolean
-          enable_support?: boolean
-          enable_terms?: boolean
           formatted_price: string
           genre: string
           icon: string
           icon_small: string
           id?: string
           name: string
-          owner_id: string
           price: number
           rating: number
           rating_count: number
           release_date: string
           screenshots: string[]
-          slug: string
-          theme?: string | null
           version: string
         }
         Update: {
           age_restriction?: string
-          app_id?: string
-          created_at?: string
+          apple_id?: string
           currency?: string
           description?: string
           developer?: string
           developer_id?: string
-          enable_contact?: boolean
-          enable_privacy?: boolean
-          enable_support?: boolean
-          enable_terms?: boolean
           formatted_price?: string
           genre?: string
           icon?: string
           icon_small?: string
           id?: string
           name?: string
-          owner_id?: string
           price?: number
           rating?: number
           rating_count?: number
           release_date?: string
           screenshots?: string[]
-          slug?: string
-          theme?: string | null
           version?: string
         }
       }

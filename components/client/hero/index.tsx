@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { useApp } from "../app-provider";
+import { useAppData, useAppMeta } from "../app-provider";
 import styles from "./index.module.css";
 
 export function Hero() {
 
-	const { screenshots, name } = useApp();
+	const { screenshots } = useAppMeta();
+	const { name } = useAppData();
 
 	return <section className={styles.hero}>
 		<div className={styles.screenshots}>

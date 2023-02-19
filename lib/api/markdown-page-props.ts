@@ -2,11 +2,12 @@ import { supabase } from "#/db";
 import matter from "gray-matter";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { remark } from "remark";
-import { App } from "../types/app";
+import { App, AppMeta } from "../types/app";
 import html from "remark-html";
 
 export interface MarkdownPageProps {
   app: App;
+  meta: AppMeta;
   markdown: string;
 }
 
@@ -62,6 +63,15 @@ export const markdownPageStaticProps = (
       return { notFound: true };
     }
 
+    const { data: metaData, error: metaError } = await supabase
+      .from("app_meta")
+      .select()
+      .eq("id", app.id);
+    const meta = metaData?.[0];
+    if (metaError || !meta) {
+      return { notFound: true };
+    }
+
     if (
       (type === "privacy" && !app.enable_privacy) ||
       (type === "terms" && !app.enable_terms)
@@ -88,6 +98,7 @@ export const markdownPageStaticProps = (
     return {
       props: {
         app,
+        meta,
         markdown,
       },
     };

@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { useApp } from "../client/app-provider"
+import { useApp, useAppMeta } from "../client/app-provider"
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import styles from "./index.module.css";
 
 export function Stars(): JSX.Element {
 
-	const { rating } = useApp();
+	const { rating } = useAppMeta();
 
 
 	const wholeStarsCount = useMemo(() => {
@@ -39,7 +39,7 @@ export function Stars(): JSX.Element {
 
 export function Stats(): JSX.Element {
 
-	const { description } = useApp();
+	const { description } = useAppMeta();
 
 	const paragraphs = useMemo(() => {
 		return description.split("\n").map(p => <p key={p}>{p.length === 0 ? <br /> : p}</p>)

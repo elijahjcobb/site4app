@@ -11,7 +11,7 @@ import html from "remark-html";
 type Props = AppProviderProps & SupportPageProps;
 
 export default function Page(props: Props) {
-	return <AppProvider app={props.app}>
+	return <AppProvider app={props.app} meta={props.meta}>
 		<SupportPage items={props.items} />
 	</AppProvider>
 }

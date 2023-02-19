@@ -3,7 +3,7 @@ import { Page } from "../page";
 import styles from "./index.module.css";
 import { cx } from "#/lib/front/cx";
 import { FaHandSpock } from "react-icons/fa";
-import { useApp } from "../app-provider";
+import { useAppData } from "../app-provider";
 import { fetcher } from "#/lib/fetcher";
 
 export function ContactPage() {
@@ -13,7 +13,7 @@ export function ContactPage() {
 	const typeRef = useRef<HTMLSelectElement>(null);
 	const messageRef = useRef<HTMLTextAreaElement>(null);
 	const [hide, setHide] = useState(false);
-	const { id } = useApp();
+	const { id } = useAppData();
 
 	const submit: FormEventHandler<HTMLFormElement> = useCallback((ev) => {
 		ev.preventDefault();

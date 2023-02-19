@@ -4,7 +4,7 @@ import { MarkdownPageProps, markdownPageStaticPaths, markdownPageStaticProps } f
 
 
 export default function Page(props: MarkdownPageProps) {
-	return <AppProvider app={props.app}>
+	return <AppProvider app={props.app} meta={props.meta}>
 		<MarkdownPage title="Privacy Policy" markdown={props.markdown} />
 	</AppProvider>
 }
