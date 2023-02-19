@@ -6,7 +6,6 @@
   background: var(--acc2);
   border: solid 1px var(--acc2);
   border-radius: var(--sp2);
-  overflow: hidden;
 }
 
 .item {
