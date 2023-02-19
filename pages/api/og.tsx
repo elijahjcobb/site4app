@@ -16,10 +16,10 @@ export default async function OG(req: NextRequest) {
 	const fontData = await font;
 
 	const { searchParams } = req.nextUrl;
-	const app = searchParams.get('app');
+	const theme = searchParams.get('theme');
 	const icon = searchParams.get('icon');
 
-	if (!app || !icon) {
+	if (!icon) {
 		return NextResponse.json({ err: "Missing params." })
 	}
 
@@ -28,7 +28,7 @@ export default async function OG(req: NextRequest) {
 			<div
 				style={{
 					fontSize: 128,
-					background: 'white',
+					background: theme ?? "white",
 					width: '100%',
 					height: '100%',
 					display: 'flex',
@@ -45,10 +45,6 @@ export default async function OG(req: NextRequest) {
 					height: 480,
 					borderRadius: "25%"
 				}} alt="icon" />
-				<span style={{
-					textAlign: "left",
-					fontSize: 128
-				}}>{app}</span>
 			</div>
 		),
 		{
