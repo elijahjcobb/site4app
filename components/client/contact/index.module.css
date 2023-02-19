@@ -1,0 +1,101 @@
+.container {
+  position: relative;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp);
+}
+
+.form label {
+  margin-top: var(--sp2);
+  font-family: var(--font-grotesk);
+  color: var(--acc5);
+  font-size: 1.125rem;
+}
+
+.form input,
+.form select,
+.form textarea {
+  background: var(--acc1);
+  border: solid 1px var(--acc2);
+  padding: var(--sp2) var(--sp);
+  border-radius: var(--sp);
+  font-family: var(--font);
+  font-size: 1rem;
+  position: relative;
+  outline-color: var(--acc3);
+  color: var(--fg);
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.req {
+  color: red;
+}
+
+.form button {
+  border: solid 1px var(--acc2);
+  background: var(--acc1);
+  color: var(--fg);
+  padding: var(--sp2);
+  font-size: 1rem;
+  border-radius: var(--sp);
+  transition: var(--trans);
+  margin-top: var(--sp2);
+  color: var(--acc5);
+  font-family: var(--font-grotesk);
+}
+
+.form button:hover {
+  background: var(--pri);
+  cursor: pointer;
+  color: black;
+}
+
+.form select {
+  color: var(--fg) !important;
+}
+
+.form select:invalid {
+  color: var(--acc4) !important;
+}
+
+.main {
+  transition: var(--trans-slow);
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.hide {
+  opacity: 0;
+}
+
+.thanks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+.showThanks {
+  animation: fadeIn 250ms ease-in-out 500ms forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "site4app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "types": "supabase gen types typescript --linked > db/types.ts"
+  },
+  "dependencies": {
+    "@element-ts/krypton": "^0.3.3",
+    "@elijahjcobb/typr": "^2.0.1",
+    "@next/font": "13.1.6",
+    "@supabase/supabase-js": "^2.8.0",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "18.14.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "classnames": "^2.3.2",
+    "cookies-next": "^2.1.1",
+    "date-fns": "^2.29.3",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.1.6",
+    "gray-matter": "^4.0.3",
+    "jsonwebtoken": "^9.0.0",
+    "next": "13.1.6",
+    "otplib": "^12.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.7.1",
+    "remark": "^14.0.2",
+    "remark-html": "^15.0.2",
+    "typescript": "4.9.5"
+  }
+}

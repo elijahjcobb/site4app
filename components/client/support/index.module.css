@@ -1,0 +1,58 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 1px;
+  background: var(--acc2);
+  border: solid 1px var(--acc2);
+  border-radius: var(--sp2);
+  overflow: hidden;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+}
+
+.question {
+  flex-grow: 1;
+}
+
+.answer {
+  padding: var(--sp2);
+}
+
+.top {
+  padding: var(--sp2);
+  cursor: pointer;
+  z-index: 2;
+  background: var(--acc1);
+  display: flex;
+  align-items: center;
+  transition: var(--trans);
+}
+
+.top:hover,
+.item:hover .top,
+.expanded {
+  background: var(--acc2);
+}
+
+.arrow {
+  flex-shrink: 0;
+  transition: var(--trans);
+}
+
+.top:hover .arrow {
+  transform: rotate(-90deg) !important;
+}
+
+.top,
+.bottom {
+  width: 100%;
+}
+
+.bottom {
+  background: var(--acc2);
+  z-index: 1;
+}

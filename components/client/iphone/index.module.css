@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+}
+
+.iphone,
+.notch,
+.screenshot {
+  position: absolute;
+}
+
+.iphone {
+  z-index: 2;
+}
+
+.notch {
+  z-index: 2;
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.screenshot {
+  z-index: 1;
+  width: 90%;
+  left: 5%;
+  top: 2%;
+  height: 96%;
+  width: 90%;
+  object-fit: cover;
+  background-color: white;
+}
