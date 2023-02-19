@@ -1,7 +1,7 @@
 import { supabase } from "#/db";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
-import { createPassword, verifyPassword } from "#/lib/api/password";
+import { verifyPassword } from "#/lib/api/password";
 import { tokenSign } from "#/lib/api/token";
 import { verifyBody } from "#/lib/api/verify-body";
 import { setCookie30Day } from "#/lib/cookie";

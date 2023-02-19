@@ -1,0 +1,77 @@
+.table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: solid 1px var(--acc2);
+  border-radius: var(--sp);
+  background: var(--acc2);
+  overflow: hidden;
+  gap: 1px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--sp);
+}
+
+.top h1 {
+  flex-grow: 1;
+}
+
+.container {
+  border: solid 1px var(--acc2);
+  background: var(--acc1);
+  padding: var(--sp4);
+  border-radius: var(--sp2);
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp4);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: var(--sp4);
+}
+
+.row {
+  background: var(--acc1);
+  border: none;
+  outline: none;
+  font-size: 1.125rem;
+  padding: var(--sp2);
+  display: flex;
+  gap: var(--sp);
+  transition: var(--tans);
+  color: var(--acc5);
+  align-items: center;
+}
+
+.image {
+  border-radius: 25%;
+}
+
+.left {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp);
+}
+
+.row span {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.row:hover {
+  background: var(--acc2);
+  cursor: pointer;
+  color: var(--fg);
+}

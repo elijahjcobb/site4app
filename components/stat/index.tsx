@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useApp, useAppMeta } from "../client/app-provider"
+import { useAppMeta } from "../client/app-provider"
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import styles from "./index.module.css";
 

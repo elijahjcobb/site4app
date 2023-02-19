@@ -1,14 +1,15 @@
 import { PropsWithChildren, useMemo } from "react";
 import { Nav } from "../nav";
 import styles from "./index.module.css";
-import { useApp } from "../app-provider";
+import { useAppData, useAppMeta } from "../app-provider";
 import Head from "next/head";
 
 export function Page({
 	children
 }: PropsWithChildren) {
 
-	const { name, icon_small, icon, theme } = useApp();
+	const { icon_small, icon } = useAppMeta();
+	const { name, theme } = useAppData();
 
 	const orgUrl = useMemo(() => {
 		const ogImageParams = new URLSearchParams();

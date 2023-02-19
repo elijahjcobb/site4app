@@ -3,6 +3,7 @@
 :root {
   --bg-rgb: 255, 255, 255;
   --bg: rgb(var(--bg-rgb));
+  --header: 64px;
   --acc7: #111;
   --acc6: #333;
   --acc5: #666;
@@ -19,6 +20,10 @@
   --sec-rgb: 242, 100, 48;
   --tri-rgb: 0, 155, 114;
   --pri-hex: #1e90ff;
+  --blue: #1e90ff;
+  --cyan: #4fd1c5;
+  --red: red;
+  --orange: #d17a22;
   --pri: rgb(var(--pri-rgb));
   --sec: rgb(var(--sec-rgb));
   --tri: rgb(var(--tri-rgb));
@@ -31,6 +36,7 @@
   --sp6: 48px;
   --sp7: 56px;
   --sp8: 64px;
+  --sp16: 128px;
   --sp-2: 4px;
   --sp-4: 2px;
   --sp-8: 1px;
@@ -77,14 +83,7 @@
 
 a {
   color: inherit;
-  transition: var(--trans);
-  padding: 2px;
-  margin: -2px;
-}
-
-a:hover {
-  color: black;
-  background: var(--pri);
+  text-decoration: none;
 }
 
 html {
@@ -97,4 +96,14 @@ body {
   color: var(--fg);
   font-family: var(--font);
   background: var(--bg);
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp);
+}
+
+section > p {
+  color: var(--acc5);
 }

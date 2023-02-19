@@ -7,6 +7,7 @@ import {
 import { NextApiRequest } from "next";
 import { supabase } from "#/db";
 import { APIError } from "lib/api-error";
+import { Database } from "#/db/types";
 
 export interface TokenData {
   id: string;
@@ -94,4 +95,23 @@ export async function verifyUser(
   // if (!user.verified)
   // throw new APIError(401, "User has not verified their email address.");
   return user;
+}
+
+export async function verifyApp(req: NextApiRequest, userId: string) {
+  const appId = req.cookies.app || req.query.appId;
+  if (typeof appId !== "string" || !appId)
+    throw new APIError(
+      400,
+      "Cannot find app id. Either set the 'app' cookie or '?appId=' url param."
+    );
+  const { data, error } = await supabase
+    .from("app")
+    .select()
+    .eq("id", appId)
+    .eq("owner_id", userId);
+  const app = data?.[0];
+  if (error || !app) {
+    throw new APIError(400, "No app found for app id provided.", error);
+  }
+  return app;
 }

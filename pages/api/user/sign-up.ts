@@ -4,6 +4,7 @@ import { createEndpoint } from "#/lib/api/create-endpoint";
 import { createPassword } from "#/lib/api/password";
 import { tokenSign } from "#/lib/api/token";
 import { verifyBody } from "#/lib/api/verify-body";
+import { assertNonEmpty } from "#/lib/assert-filled";
 import { setCookie30Day } from "#/lib/cookie";
 import { T } from "@elijahjcobb/typr";
 
@@ -13,11 +14,16 @@ export interface ApiResponseUserSignUp {
 
 export default createEndpoint<ApiResponseUserSignUp>({
   POST: async ({ req, res }) => {
-    const { email, password: rawPassword } = verifyBody(
+    const {
+      email,
+      password: rawPassword,
+      name,
+    } = verifyBody(
       req,
       T.object({
         email: T.regex.email(),
         password: T.string(),
+        name: T.string(),
       })
     );
 
@@ -29,11 +35,14 @@ export default createEndpoint<ApiResponseUserSignUp>({
 
     const password = await createPassword(rawPassword);
 
+    assertNonEmpty(name, "name");
+
     const { data, error } = await supabase
       .from("user")
       .insert({
         email,
         password,
+        name: name.trim(),
       })
       .select();
 
