@@ -106,7 +106,7 @@
 }
 
 .mobileNav {
-  --top: calc(var(--height) + var(--sp2));
+  --top: calc(var(--height));
   position: absolute;
   padding-top: var(--sp);
   top: var(--top);
@@ -115,7 +115,7 @@
   background: var(--bg);
   left: calc(100% + var(--sp2));
   list-style: none;
-  display: flex;
+  display: none;
   flex-direction: column;
   transition: var(--trans-slow);
   z-index: 10;
@@ -144,7 +144,17 @@
 }
 
 .showMobileNav {
-  left: 0;
+  display: flex;
+  animation: moveIn 250ms ease-in-out 40ms forwards;
+}
+
+@keyframes moveIn {
+  from {
+    left: calc(100% + var(--sp2));
+  }
+  to {
+    left: 0;
+  }
 }
 
 .mobileBadge {

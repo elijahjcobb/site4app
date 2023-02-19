@@ -67,8 +67,7 @@
 
 .main {
   transition: var(--trans-slow);
-  z-index: 2;
-  position: absolute;
+  z-index: 4;
   top: 0;
   width: 100%;
 }
