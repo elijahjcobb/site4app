@@ -35,7 +35,7 @@ export default async function OG(req: NextRequest) {
 					fontFamily: '"Space Grotesk"',
 					textAlign: 'center',
 					alignItems: 'center',
-					padding: 32,
+					padding: 64,
 					justifyContent: 'center',
 					gap: 64,
 				}}
