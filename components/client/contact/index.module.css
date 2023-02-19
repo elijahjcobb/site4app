@@ -72,22 +72,22 @@
   width: 100%;
 }
 
-.hide {
-  opacity: 0;
-}
-
 .thanks {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: var(--sp2);
   position: absolute;
   top: 0;
   opacity: 0;
   z-index: 1;
+  height: 100%;
+  background: var(--bg);
+  width: 100%;
 }
 
 .showThanks {
-  animation: fadeIn 250ms ease-in-out 500ms forwards;
+  display: flex;
+  animation: fadeIn 500ms ease-in-out forwards;
 }
 
 @keyframes fadeIn {

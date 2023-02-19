@@ -37,7 +37,7 @@ export function ContactPage() {
 
 	return <Page>
 		<div className={styles.container}>
-			<div className={cx(styles.main, hide && styles.hide)}>
+			<div className={styles.main}>
 				<h1 className={styles.title}>Contact</h1>
 				<form className={styles.form} onSubmit={submit}>
 					<label htmlFor="name">Name:</label>
