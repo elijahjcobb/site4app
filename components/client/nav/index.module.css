@@ -113,7 +113,7 @@
   width: 100%;
   height: calc(100vh - var(--top));
   background: var(--bg);
-  left: 100%;
+  left: calc(100% + var(--sp2));
   list-style: none;
   display: flex;
   flex-direction: column;
