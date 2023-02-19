@@ -16,8 +16,6 @@ export default createEndpoint<{}>({
       })
     );
 
-    res.status(200).json({});
-
     await supabase.from("contact").insert({
       app_id: id,
       name: name.length === 0 ? null : name,
@@ -25,5 +23,7 @@ export default createEndpoint<{}>({
       type,
       message,
     });
+
+    res.status(200).json({});
   },
 });
