@@ -42,6 +42,7 @@ export interface Database {
           enable_support: boolean
           enable_terms: boolean
           id: string
+          isPro: boolean
           name: string
           owner_id: string
           slug: string
@@ -54,6 +55,7 @@ export interface Database {
           enable_support?: boolean
           enable_terms?: boolean
           id?: string
+          isPro?: boolean
           name: string
           owner_id: string
           slug: string
@@ -66,6 +68,7 @@ export interface Database {
           enable_support?: boolean
           enable_terms?: boolean
           id?: string
+          isPro?: boolean
           name?: string
           owner_id?: string
           slug?: string

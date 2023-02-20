@@ -13,6 +13,7 @@ export default createEndpoint<ApiResponseUser>({
       user: {
         id: user.id,
         email: user.email,
+        name: user.name,
       },
     });
   },

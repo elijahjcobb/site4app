@@ -1,0 +1,58 @@
+.page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.header {
+  display: flex;
+  background: var(--acc1);
+  border: solid 1px var(--acc2);
+  padding: var(--sp);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp2);
+}
+
+.header h2 {
+  flex-grow: 1;
+}
+
+.content {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  position: relative;
+}
+
+.editor {
+  height: 100%;
+}
+
+.preview {
+  overflow-y: auto;
+}
+
+.loadingContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp2);
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--trans-slow);
+}
+
+.loading {
+  visibility: visible;
+  opacity: 1;
+}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReactNode, useCallback, useMemo } from "react";
+import { CSSProperties, ReactNode, useCallback, useMemo } from "react";
 import { IconType } from "react-icons/lib";
 import { BasePage } from "../base-page";
 import { Icon } from "../icon";
@@ -10,8 +10,8 @@ import { cx } from "#/lib/front/cx";
 import { Button } from "../button";
 import { deleteCookie } from "cookies-next";
 import { ImSpinner } from "react-icons/im";
-// import { AppPicker } from "../app-picker";
-import { useApp } from "#/components/dashboard-page/dashboard-context";
+import { DashboardProvider, useApp } from "#/components/dashboard-page/dashboard-context";
+import { AppPicker } from "./app-picker";
 
 function DashboardLink({
 	href,
@@ -35,19 +35,28 @@ function DashboardLink({
 	</Link>
 }
 
-export function DashboardPage({
-	title,
-	children,
-	className,
-	useMaxWidth = false,
-	maxWidth = 720
-}: {
+interface DashboardPageProps {
 	title?: string;
 	children: ReactNode;
 	className?: string;
 	useMaxWidth?: boolean;
 	maxWidth?: number;
-}) {
+	style?: CSSProperties
+}
+export function DashboardPage(props: DashboardPageProps) {
+	return <DashboardProvider>
+		<DashboardPageWithoutProvider {...props} />
+	</DashboardProvider>
+}
+
+function DashboardPageWithoutProvider({
+	title,
+	children,
+	className,
+	useMaxWidth = false,
+	maxWidth = 720,
+	style: userStyles
+}: DashboardPageProps) {
 
 	const router = useRouter();
 	const project = useApp();
@@ -59,7 +68,7 @@ export function DashboardPage({
 	}, [router]);
 
 	return <BasePage title={title}>
-		<div className={styles.page}>
+		<div style={userStyles} className={styles.page}>
 			<header className={styles.header}>
 				<Link href='/about' className={styles.title}>
 					<Icon size={32} />
@@ -97,7 +106,7 @@ export function DashboardPage({
 						icon={IoSettings}
 					/>
 				</nav>
-				{/* <AppPicker /> */}
+				<AppPicker />
 				<div className={styles.buttons}>
 					<Button
 						secondary

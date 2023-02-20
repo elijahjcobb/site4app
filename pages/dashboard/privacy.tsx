@@ -1,9 +1,5 @@
-import { DashboardPage } from "#/components/dashboard-page";
-
+import { MarkdownDashboardPage } from "#/components/md-dashboard-page";
 
 export default function Page() {
-
-	return <DashboardPage useMaxWidth title='privacy'>
-		<h2>Privacy Policy</h2>
-	</DashboardPage>
+	return <MarkdownDashboardPage type="privacy" />
 }

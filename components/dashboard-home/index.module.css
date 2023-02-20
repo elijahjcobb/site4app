@@ -1,0 +1,14 @@
+.container {
+  opacity: 0;
+  padding: var(--sp6) 0;
+  animation: fadeIn 250ms ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

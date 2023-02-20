@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { ApiResponseUser } from "#/pages/api/user";
 import { ApiResponseAppWithMeta } from "#/pages/api/app/meta";
+import { AppWithMeta } from "#/lib/api/fetchers";
+import { User } from "#/lib/types/user";
 
 interface DashboardContext {
 	app: ApiResponseAppWithMeta | undefined;
@@ -83,7 +85,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
 	const killInterval = useCallback(() => {
 		console.info("Killing Sync Service", new Date().toLocaleTimeString())
 		if (interval.current) clearInterval(interval.current);
-	}, [])
+	}, []);
 
 	useEffect(() => {
 
@@ -117,11 +119,13 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		if (!user) return;
+		console.info("Updating 'user' cache in localStorage.");
 		localStorage.setItem('user', JSON.stringify(user))
 	}, [user]);
 
 	useEffect(() => {
 		if (!app) return;
+		console.info("Updating 'app' cache in localStorage.");
 		localStorage.setItem('app', JSON.stringify(app))
 	}, [app]);
 
@@ -144,10 +148,27 @@ export function useDashboardContext() {
 	return useContext(context);
 }
 
-export function useApp(): ApiResponseAppWithMeta | undefined {
-	return useDashboardContext().app;
+export function useApp(): AppWithMeta | undefined {
+	return useDashboardContext().app?.app;
 }
 
-export function useUser(): ApiResponseUser | undefined {
-	return useDashboardContext().user;
+export function useAppNoUpdate(): AppWithMeta | undefined {
+
+	const [value, setValue] = useState<AppWithMeta | undefined>(undefined);
+	const hasSet = useRef(false);
+	const context = useDashboardContext();
+
+	useEffect(() => {
+		if (hasSet.current) return;
+		const app = context.app?.app;
+		if (!app) return;
+		setValue(app);
+		hasSet.current = true;
+	}, [context]);
+
+	return value;
+}
+
+export function useUser(): User | undefined {
+	return useDashboardContext().user?.user;
 }

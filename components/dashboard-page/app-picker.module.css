@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp);
+  width: 100%;
+  background: var(--acc1);
+  border: solid 1px var(--acc2);
+  border-radius: var(--sp);
+  padding: var(--sp);
+}
+
+.link:hover {
+  background: var(--acc2);
+}
+
+.container,
+.arrow {
+  transition: var(--trans);
+}
+
+.image {
+  border-radius: 25%;
+}
+
+.container:hover .arrow {
+  transform: scale(1.25);
+}
+
+.name {
+  flex-grow: 1;
+}
+
+.skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: var(--trans-slow);
+}
+
+.show {
+  visibility: visible;
+  opacity: 1;
+}

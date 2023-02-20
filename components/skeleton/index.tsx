@@ -7,6 +7,7 @@ interface SkeletonProps {
 	height: number | string;
 	noBorder?: boolean;
 	noBackground?: boolean;
+	className?: string;
 }
 
 export function Skeleton({
@@ -14,6 +15,7 @@ export function Skeleton({
 	height,
 	noBorder = false,
 	noBackground = false,
+	className
 }: SkeletonProps) {
 	return <div
 		style={{
@@ -24,6 +26,7 @@ export function Skeleton({
 			styles.skeleton,
 			noBorder && styles.noBorder,
 			noBackground && styles.noBackground,
+			className
 		)}
 	>
 		<div className={styles.outer}>

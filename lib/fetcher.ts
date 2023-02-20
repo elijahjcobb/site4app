@@ -46,6 +46,7 @@ export function fetcher<T extends object>({
         const res = await fetch(url, {
           method,
           body: bodyString,
+          credentials: "same-origin",
           headers: {
             authorization: `Bearer ${getCookie("authorization")}`,
           },

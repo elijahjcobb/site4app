@@ -1,23 +1,23 @@
 .button {
-  background: var(--acc-1);
-  border: solid 1px var(--acc-2);
+  background: var(--acc1);
+  border: solid 1px var(--acc2);
   font-size: 1rem;
   display: flex;
   align-items: center;
   gap: var(--sp);
   padding: var(--sp);
   border-radius: var(--sp);
-  color: var(--acc-3);
+  color: var(--acc3);
   transition: var(--trans);
 }
 
 .button:hover {
-  color: var(--acc-6);
+  color: var(--acc6);
 }
 
 .button:hover {
   cursor: pointer;
-  border-color: var(--acc-6);
+  border-color: var(--acc6);
 }
 
 .enabled,
@@ -31,16 +31,16 @@
 
 .button:disabled,
 .button:hover:disabled {
-  color: var(--acc-3);
+  color: var(--acc3);
   cursor: not-allowed;
 }
 
 .button:disabled {
-  border-color: var(--acc-2);
+  border-color: var(--acc2);
 }
 
 .button:hover:disabled {
-  border-color: var(--acc-3);
+  border-color: var(--acc3);
 }
 
 .button span {

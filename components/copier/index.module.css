@@ -1,13 +1,13 @@
 .url {
-  border: solid 1px var(--acc-2);
+  border: solid 1px var(--acc2);
   background: var(--bg);
   outline: none;
   padding: var(--sp);
-  border-radius: var(--sp2);
+  border-radius: var(--sp-2);
   margin-top: var(--sp2);
   overflow: hidden;
   cursor: copy;
-  color: var(--sec);
+  color: var(--acc5);
   transition: var(--trans);
   font-size: 0.85rem;
   font-family: var(--font-mono);
@@ -23,12 +23,12 @@
 
 .url:hover {
   color: var(--fg);
-  background: var(--acc-1);
+  background: var(--acc1);
 }
 
 .url:disabled {
   cursor: not-allowed;
-  color: var(--sec);
-  border: solid 1px var(--acc-2);
+  color: var(--acc5);
+  border: solid 1px var(--acc2);
   background: var(--bg);
 }

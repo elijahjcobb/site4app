@@ -46,3 +46,14 @@
   font-size: 1.125rem;
   font-weight: bold;
 }
+
+.md a {
+  text-decoration: underline;
+  padding: 4px;
+  margin: -4px;
+  transition: var(--trans);
+}
+
+.md a:hover {
+  background: var(--pri);
+}

@@ -98,11 +98,11 @@ export async function verifyUser(
 }
 
 export async function verifyApp(req: NextApiRequest, userId: string) {
-  const appId = req.cookies.app || req.query.appId;
+  const appId = req.query.appId || req.cookies.appId;
   if (typeof appId !== "string" || !appId)
     throw new APIError(
       400,
-      "Cannot find app id. Either set the 'app' cookie or '?appId=' url param."
+      "Cannot find app id. Either set the 'appId' cookie or '?appId=' url param."
     );
   const { data, error } = await supabase
     .from("app")

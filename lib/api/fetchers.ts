@@ -7,6 +7,8 @@ export type App = Database["public"]["Tables"]["app"]["Row"];
 export type AppMeta = Database["public"]["Tables"]["app_meta"]["Row"];
 export type Contact = Database["public"]["Tables"]["contact"]["Row"];
 export type Support = Database["public"]["Tables"]["support"]["Row"];
+export type Privacy = Database["public"]["Tables"]["privacy"]["Row"];
+export type Terms = Database["public"]["Tables"]["terms"]["Row"];
 export type AppWithMeta = App & { meta?: AppMeta };
 
 async function fetchItem<
@@ -54,4 +56,12 @@ export async function fetchContact(id: string): Promise<Contact> {
 
 export async function fetchSupport(id: string): Promise<Support> {
   return fetchItem(id, "support");
+}
+
+export async function fetchTerms(id: string): Promise<Terms> {
+  return fetchItem(id, "terms");
+}
+
+export async function fetchPrivacy(id: string): Promise<Privacy> {
+  return fetchItem(id, "privacy");
 }
