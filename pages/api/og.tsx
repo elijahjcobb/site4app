@@ -6,14 +6,7 @@ export const config = {
 	runtime: 'edge',
 };
 
-// Make sure the font exists in the specified path:
-const font = fetch(new URL('../../assets/grotesk.ttf', import.meta.url)).then(
-	(res) => res.arrayBuffer(),
-);
-
 export default async function OG(req: NextRequest) {
-
-	const fontData = await font;
 
 	const { searchParams } = req.nextUrl;
 	const theme = searchParams.get('theme');
@@ -49,14 +42,7 @@ export default async function OG(req: NextRequest) {
 		),
 		{
 			width: 1200,
-			height: 600,
-			fonts: [
-				{
-					name: 'Typewriter',
-					data: fontData,
-					style: 'normal',
-				},
-			],
+			height: 600
 		},
 	);
 }
