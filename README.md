@@ -6,6 +6,8 @@
 
 `pnpm dev` - run dev server on [localhost:3000](http://localhost:3000)
 
+`pnpm test` - run all test files `*.test.(ts | tsx)`
+
 `pnpm build` - make a production build
 
 `pnpm start` - run a production build
