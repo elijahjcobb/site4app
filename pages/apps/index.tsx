@@ -7,7 +7,7 @@ import { Button } from "#/components/button";
 import { DashboardPageLoader } from "#/components/dashboard-page";
 import { MarketingPage } from "#/components/marketing-page";
 import { setCookie30Day } from "lib/cookie";
-import { useFetch } from "#/lib/fetcher";
+import { useFetch } from "#/lib/front/fetcher";
 import styles from "#/styles/projects.module.css";
 import { truncate } from "#/lib/front/truncate";
 import { ApiResponseAppAllWithMeta } from "../api/app/all/meta";

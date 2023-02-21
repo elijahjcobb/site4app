@@ -2,7 +2,7 @@ import { Button } from "#/components/button";
 import { useUser } from "#/components/dashboard-page/dashboard-context";
 import { Field } from "#/components/field";
 import { SkeletonContainer } from "#/components/skeleton";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { ApiResponseUser } from "#/pages/api/user";
 import { useState, useEffect, useCallback } from "react";
 import { IoPerson } from "react-icons/io5";

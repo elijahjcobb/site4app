@@ -1,7 +1,7 @@
 
 import { Button } from "#/components/button";
 import { useAppNoUpdate, useDashboardContext } from "#/components/dashboard-page/dashboard-context";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { useState, useEffect, useCallback } from "react";
 import { IoHelpBuoy, IoBug, IoReceipt, IoAccessibility } from "react-icons/io5";
 import styles from "../index.module.css";

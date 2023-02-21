@@ -3,7 +3,7 @@ import { Field } from "#/components/field";
 import { RxLetterCaseCapitalize } from "react-icons/rx";
 import { Button } from "#/components/button";
 import { IoAdd } from "react-icons/io5";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { setCookie30Day } from "lib/cookie";
 import { useRouter } from "next/router";
 import { BasePage } from "#/components/base-page";

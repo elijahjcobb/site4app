@@ -1,6 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
 import { useCallback } from "react";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { ApiResponseUser } from "#/pages/api/user";

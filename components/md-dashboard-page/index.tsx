@@ -11,7 +11,7 @@ import { cx } from "#/lib/front/cx";
 import { useDebounce } from "#/lib/front/use-debounce";
 import { useTheme } from "#/lib/front/use-theme";
 import { Spinner } from "../spinner";
-import { fetcher, useFetch } from "#/lib/fetcher";
+import { fetcher, useFetch } from "#/lib/front/fetcher";
 import { ApiResponsePrivacy } from "#/pages/api/privacy";
 import { ApiResponseTerms } from "#/pages/api/terms";
 import { useApp } from "../dashboard-page/dashboard-context";

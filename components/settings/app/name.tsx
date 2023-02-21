@@ -3,7 +3,7 @@ import { Button } from "#/components/button";
 import { useAppNoUpdate, useDashboardContext } from "#/components/dashboard-page/dashboard-context";
 import { Field } from "#/components/field";
 import { SkeletonContainer } from "#/components/skeleton";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { useState, useEffect, useCallback } from "react";
 import { RxLetterCaseCapitalize } from "react-icons/rx";
 import styles from "../index.module.css";

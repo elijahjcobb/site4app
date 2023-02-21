@@ -1,5 +1,5 @@
 import { Button } from "#/components/button";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { ApiResponseApp } from "#/pages/api/app/ingest";
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";

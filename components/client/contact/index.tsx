@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import { cx } from "#/lib/front/cx";
 import { FaHandSpock } from "react-icons/fa";
 import { useAppData } from "../app-provider";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 
 export function ContactPage() {
 

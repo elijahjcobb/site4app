@@ -7,7 +7,7 @@ import { Field } from "../field";
 import { ImSpinner } from "react-icons/im";
 import { IoMail, IoLockClosed, IoPerson } from 'react-icons/io5';
 import { cx } from "#/lib/front/cx";
-import { fetcher } from "#/lib/fetcher";
+import { fetcher } from "#/lib/front/fetcher";
 import { ApiResponseUserSignIn } from "#/pages/api/user/sign-in";
 import { useRouter } from "next/router";
 import Link from "next/link";
