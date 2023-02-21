@@ -4,17 +4,19 @@
 
 ## Commands
 
+`npm i -g pnpm` - install [pnpm](https://pnpm.io/)
+
 `pnpm i` - install all dependencies
 
 `pnpm dev` - run dev server on [localhost:3000](http://localhost:3000)
 
-`pnpm test` - run all test files `*.test.(ts | tsx)`
+`pnpm test` - run all test files `*.test.(ts | tsx)` with [jest](https://jestjs.io/)
 
 `pnpm build` - make a production build
 
 `pnpm start` - run a production build
 
-`pnpm types` - create TS definitions for database
+`pnpm types` - create TS definitions for tables in the database from [supabase](https://supabase.com/)
 
 ## Environment Variables
 
