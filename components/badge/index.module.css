@@ -6,7 +6,6 @@
   padding: 0 var(--sp);
   border-radius: var(--sp);
   border: solid 1px var(--acc2);
-  box-shadow: 0 0 4px var(--acc3);
 }
 
 .badge span {

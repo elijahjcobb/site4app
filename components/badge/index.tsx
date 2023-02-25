@@ -6,7 +6,7 @@ export function Badge({
 	color = 'default'
 }: {
 	value: string;
-	color?: 'default' | 'success' | 'error' | 'warning' | 'hobby' | 'pro' | 'business';
+	color?: 'default' | 'success' | 'error' | 'warning' | 'hobby' | 'pro';
 }): JSX.Element {
 	return <div className={cx(styles.badge, {
 		[styles.default]: color === 'default',
@@ -15,13 +15,12 @@ export function Badge({
 		[styles.warning]: color === 'warning',
 		[styles.hobby]: color === 'hobby',
 		[styles.pro]: color === 'pro',
-		[styles.business]: color === 'business',
 	})}>
 		<span>{value}</span>
 	</div>
 }
 
-export function PlanBadge({ type }: { type?: 'hobby' | 'pro' | 'business' }): JSX.Element {
+export function PlanBadge({ type }: { type?: 'hobby' | 'pro' }): JSX.Element {
 	return <Badge value={type?.toUpperCase() ?? 'HOBBY'} color={type ?? 'hobby'} />
 }
 
@@ -31,8 +30,4 @@ export function HobbyBadge(): JSX.Element {
 
 export function ProBadge(): JSX.Element {
 	return <PlanBadge type='pro' />
-}
-
-export function BusinessBadge(): JSX.Element {
-	return <PlanBadge type='business' />
 }

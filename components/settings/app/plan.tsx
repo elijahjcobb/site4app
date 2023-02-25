@@ -1,25 +1,20 @@
 
+import { PlanBadge } from "#/components/badge";
 import { Button } from "#/components/button";
-import { useApp, useBilling } from "#/components/dashboard-page/dashboard-context";
+import { useApp } from "#/components/dashboard-page/dashboard-context";
 import Link from "next/link";
+import styles from "../index.module.css";
 
 export function SettingsAppPlan() {
 
 	const app = useApp();
-	const billing = useBilling();
 
 	return <section>
-		<h3>Plan</h3>
+		<div className={styles.flex}>
+			<h3>Plan</h3>
+			<PlanBadge type={app?.isPro ? "pro" : "hobby"} />
+		</div>
 		<p>Change your app&apos;s plan. See <Link target='_blank' href='/pricing'>pricing</Link>.</p>
-		<code>
-			plan: {app?.isPro ? "PRO" : "hobby"}
-		</code>
-		<code>
-			hasEnded: {billing?.has_ended ? "true" : "false"}
-		</code>
-		<code>
-			willEnd: {billing?.will_end ? "true" : "false"}
-		</code>
 		<Button href="/api/billing/portal" value="Change Plan" />
 	</section>
 }

@@ -45,12 +45,6 @@ async function fetchUser(): Promise<ApiResponseUser> {
 	})
 }
 
-// function fetchFromLocalStorage<T>(key: string): T | undefined {
-// 	const value = localStorage.getItem(key);
-// 	if (!value) return undefined;
-// 	return JSON.parse(value) as T;
-// }
-
 export function DashboardProvider({ children }: { children: ReactNode }) {
 
 	const [user, setUser] = useState<ApiResponseUser | undefined>(undefined);
@@ -59,24 +53,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
 	const [lastUpdated, setLastUpdated] = useState<number>(0);
 	const interval = useRef<NodeJS.Timer | null>(null);
 
-	// useEffect(() => {
-	// 	setUser(fetchFromLocalStorage('user'));
-	// 	setApp(fetchFromLocalStorage('app'));
-	// 	setBilling(fetchFromLocalStorage('billing'));
-	// }, []);
-
 	const fetchScopes = useCallback(() => {
-		(async () => {
-			console.info("Sync Service: FETCH", new Date().toLocaleTimeString())
-			const user = await fetchUser();
-			const app = await fetchApp();
-			const billing = await fetchBilling();
-			setUser(user);
-			setApp(app);
-			setBilling(billing);
-		})().catch(error => {
-			console.error('Sync Service: ERROR - ', error);
-		})
+		console.info("Sync Service: FETCH", new Date().toLocaleTimeString())
+		fetchUser().then(setUser).catch(console.error);
+		fetchApp().then(setApp).catch(console.error);
+		fetchBilling().then(setBilling).catch(console.error);
 	}, []);
 
 	useEffect(() => {
