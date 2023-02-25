@@ -13,7 +13,7 @@ export default async function OG(req: NextRequest) {
 	const icon = searchParams.get('icon');
 
 	if (!icon) {
-		return NextResponse.json({ err: "Missing params." })
+		return NextResponse.json({ err: "Missing param." })
 	}
 
 	return new ImageResponse(
