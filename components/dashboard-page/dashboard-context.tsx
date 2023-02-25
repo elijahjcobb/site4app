@@ -5,14 +5,17 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { ApiResponseUser } from "#/pages/api/user";
 import { ApiResponseAppWithMeta } from "#/pages/api/app/meta";
-import { AppWithMeta } from "#/lib/api/fetchers";
+import type { AppWithMeta, Billing } from "#/lib/api/fetchers";
 import { User } from "#/lib/types/user";
+import { ApiResponseBilling } from "#/pages/api/billing";
 
 interface DashboardContext {
 	app: ApiResponseAppWithMeta | undefined;
 	setApp: Dispatch<SetStateAction<ApiResponseAppWithMeta | undefined>>;
 	user: ApiResponseUser | undefined;
 	setUser: Dispatch<SetStateAction<ApiResponseUser | undefined>>;
+	billing: ApiResponseBilling | undefined;
+	setBilling: Dispatch<SetStateAction<ApiResponseBilling | undefined>>;
 	lastUpdated: number;
 }
 
@@ -26,6 +29,14 @@ async function fetchApp(): Promise<ApiResponseAppWithMeta> {
 	})
 }
 
+async function fetchBilling(): Promise<ApiResponseBilling> {
+	return await fetcher<ApiResponseBilling>({
+		path: "/billing",
+		method: "GET",
+		silent: true,
+	})
+}
+
 async function fetchUser(): Promise<ApiResponseUser> {
 	return await fetcher<ApiResponseUser>({
 		path: "/user",
@@ -34,31 +45,35 @@ async function fetchUser(): Promise<ApiResponseUser> {
 	})
 }
 
-function fetchFromLocalStorage<T>(key: string): T | undefined {
-	const value = localStorage.getItem(key);
-	if (!value) return undefined;
-	return JSON.parse(value) as T;
-}
+// function fetchFromLocalStorage<T>(key: string): T | undefined {
+// 	const value = localStorage.getItem(key);
+// 	if (!value) return undefined;
+// 	return JSON.parse(value) as T;
+// }
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
 
 	const [user, setUser] = useState<ApiResponseUser | undefined>(undefined);
 	const [app, setApp] = useState<ApiResponseAppWithMeta | undefined>(undefined);
+	const [billing, setBilling] = useState<ApiResponseBilling | undefined>(undefined);
 	const [lastUpdated, setLastUpdated] = useState<number>(0);
 	const interval = useRef<NodeJS.Timer | null>(null);
 
-	useEffect(() => {
-		setUser(fetchFromLocalStorage('user'));
-		setApp(fetchFromLocalStorage('app'));
-	}, []);
+	// useEffect(() => {
+	// 	setUser(fetchFromLocalStorage('user'));
+	// 	setApp(fetchFromLocalStorage('app'));
+	// 	setBilling(fetchFromLocalStorage('billing'));
+	// }, []);
 
 	const fetchScopes = useCallback(() => {
 		(async () => {
 			console.info("Sync Service: FETCH", new Date().toLocaleTimeString())
 			const user = await fetchUser();
 			const app = await fetchApp();
+			const billing = await fetchBilling();
 			setUser(user);
 			setApp(app);
+			setBilling(billing);
 		})().catch(error => {
 			console.error('Sync Service: ERROR - ', error);
 		})
@@ -130,15 +145,23 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
 	}, [app]);
 
 	useEffect(() => {
+		if (!billing) return;
+		console.info("Updating 'billing' cache in localStorage.");
+		localStorage.setItem('billing', JSON.stringify(billing))
+	}, [billing]);
+
+	useEffect(() => {
 		setLastUpdated(Date.now());
-	}, [app, user])
+	}, [app, user, billing])
 
 	return <context.Provider value={{
 		user,
 		setUser,
 		app,
 		setApp,
-		lastUpdated
+		lastUpdated,
+		billing,
+		setBilling
 	}}>
 		{children}
 	</context.Provider>
@@ -151,6 +174,12 @@ export function useDashboardContext() {
 export function useApp(): AppWithMeta | undefined {
 	return useDashboardContext().app?.app;
 }
+
+
+export function useBilling(): Billing | undefined {
+	return useDashboardContext().billing?.billing;
+}
+
 
 export function useAppNoUpdate(): AppWithMeta | undefined {
 

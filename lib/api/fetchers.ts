@@ -9,6 +9,7 @@ export type Contact = Database["public"]["Tables"]["contact"]["Row"];
 export type Support = Database["public"]["Tables"]["support"]["Row"];
 export type Privacy = Database["public"]["Tables"]["privacy"]["Row"];
 export type Terms = Database["public"]["Tables"]["terms"]["Row"];
+export type Billing = Database["public"]["Tables"]["billing"]["Row"];
 export type AppWithMeta = App & { meta?: AppMeta };
 
 async function fetchItem<
@@ -64,4 +65,42 @@ export async function fetchTerms(id: string): Promise<Terms> {
 
 export async function fetchPrivacy(id: string): Promise<Privacy> {
   return fetchItem(id, "privacy");
+}
+
+export async function fetchBilling(id: string): Promise<Billing> {
+  return fetchItem(id, "billing");
+}
+
+export async function fetchBillingForAppId(appId: string): Promise<Billing> {
+  const { data, error } = await supabase
+    .from("billing")
+    .select()
+    .eq("app_id", appId);
+  const row = data?.[0];
+  if (error || !row) {
+    throw new APIError(
+      400,
+      `Failed to fetch billing item for customer.`,
+      error
+    );
+  }
+  return row;
+}
+
+export async function fetchBillingForCustomerId(
+  customerId: string
+): Promise<Billing> {
+  const { data, error } = await supabase
+    .from("billing")
+    .select()
+    .eq("customer_id", customerId);
+  const row = data?.[0];
+  if (error || !row) {
+    throw new APIError(
+      400,
+      `Failed to fetch billing item for customer.`,
+      error
+    );
+  }
+  return row;
 }

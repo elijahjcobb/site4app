@@ -137,6 +137,41 @@ export interface Database {
           version?: string
         }
       }
+      billing: {
+        Row: {
+          app_id: string
+          cancel_at: number | null
+          canceled_at: number | null
+          created_at: string
+          customer_id: string | null
+          has_ended: boolean
+          id: string
+          session_id: string
+          will_end: boolean
+        }
+        Insert: {
+          app_id: string
+          cancel_at?: number | null
+          canceled_at?: number | null
+          created_at?: string
+          customer_id?: string | null
+          has_ended?: boolean
+          id?: string
+          session_id: string
+          will_end?: boolean
+        }
+        Update: {
+          app_id?: string
+          cancel_at?: number | null
+          canceled_at?: number | null
+          created_at?: string
+          customer_id?: string | null
+          has_ended?: boolean
+          id?: string
+          session_id?: string
+          will_end?: boolean
+        }
+      }
       contact: {
         Row: {
           app_id: string
