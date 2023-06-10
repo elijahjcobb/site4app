@@ -1,22 +1,28 @@
-# next-template
+# site4app
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
+[site4.app](https://site4.app)
 
-## Usage
+## Commands
 
-```bash
-npx create-next-app -e https://github.com/shadcn/next-template
-```
+`npm i -g pnpm` - install [pnpm](https://pnpm.io/)
 
-## Features
+`pnpm i` - install all dependencies
 
-- Next.js 13 App Directory
-- Radix UI Primitives
-- Tailwind CSS
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Tailwind CSS class sorting, merging and linting.
+`pnpm dev` - run dev server on [localhost:3000](http://localhost:3000)
 
-## License
+`pnpm test` - run all test files `*.test.(ts | tsx)` with [jest](https://jestjs.io/)
 
-Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
+`pnpm build` - make a production build
+
+`pnpm start` - run a production build
+
+`pnpm types` - create TS definitions for tables in the database from [supabase](https://supabase.com/)
+
+## Environment Variables
+
+> Run the following commands from your projects root directory.
+
+1. Install vercel-cli: `pnpm i -g vercel`
+2. Login to vercel: `vercel login`
+3. Link project: `vercel link`
+4. Pull env vars into file: `vercel env pull .env.local`
