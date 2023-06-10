@@ -1,4 +1,4 @@
-import { supabase } from "#/db";
+import { prisma } from "#/db";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { verifyPassword } from "#/lib/api/password";
@@ -21,13 +21,12 @@ export default createEndpoint<ApiResponseUserSignIn>({
       })
     );
 
-    const { data, error } = await supabase
-      .from("user")
-      .select()
-      .eq("email", email);
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
 
-    if (error) throw error;
-    const user = data[0];
     if (!user) throw new APIError(401, "Invalid credentials.");
     const passwordIsCorrect = await verifyPassword(rawPassword, user.password);
     if (!passwordIsCorrect) throw new APIError(401, "Invalid credentials.");

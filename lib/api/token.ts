@@ -5,9 +5,8 @@ import {
   verify,
 } from "jsonwebtoken";
 import { NextApiRequest } from "next";
-import { supabase } from "#/db";
+import { App, prisma, type User } from "#/db";
 import { APIError } from "lib/api-error";
-import { Database } from "#/db/types";
 
 export interface TokenData {
   id: string;
@@ -83,35 +82,37 @@ export async function verifyUser(
   config?: {
     allowUnverified?: boolean;
   }
-) {
+): Promise<User> {
   const { id } = await tokenVerifyRequestForType(req);
-  const { data, error } = await supabase.from("user").select().eq("id", id);
-  if (error || !data || data.length < 1) {
-    console.error(error);
-    throw new APIError(401, "Authentication user is invalid.");
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  if (!user) {
+    throw new APIError(401, "Authenticated user is invalid.");
   }
-  const user = data[0];
-  // if (config?.allowUnverified) return user;
-  // if (!user.verified)
-  // throw new APIError(401, "User has not verified their email address.");
   return user;
 }
 
-export async function verifyApp(req: NextApiRequest, userId: string) {
+export async function verifyApp(
+  req: NextApiRequest,
+  userId: string
+): Promise<App> {
   const appId = req.query.appId || req.cookies.appId;
   if (typeof appId !== "string" || !appId)
     throw new APIError(
       400,
       "Cannot find app id. Either set the 'appId' cookie or '?appId=' url param."
     );
-  const { data, error } = await supabase
-    .from("app")
-    .select()
-    .eq("id", appId)
-    .eq("owner_id", userId);
-  const app = data?.[0];
-  if (error || !app) {
-    throw new APIError(400, "No app found for app id provided.", error);
+
+  const app = await prisma.app.findFirst({
+    where: {
+      id: appId,
+      owner_id: userId,
+    },
+  });
+
+  if (!app) {
+    throw new APIError(400, "No app found for app id provided.");
   }
   return app;
 }

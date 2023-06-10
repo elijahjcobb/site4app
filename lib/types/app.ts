@@ -1,4 +1,4 @@
-import type { Database } from "#/db/types";
+import type { Meta } from "#/db";
 
 export interface AppleAppResponse {
   resultCount: number;
@@ -52,13 +52,7 @@ export interface AppleApp {
   userRatingCount: number;
 }
 
-export type AppMeta = Database["public"]["Tables"]["app_meta"]["Row"];
-export type App = Database["public"]["Tables"]["app"]["Row"];
-
-export function appleAppToAppMeta(
-  app: AppleApp,
-  id: string
-): Database["public"]["Tables"]["app_meta"]["Insert"] {
+export function appleAppToAppMeta(app: AppleApp, id: string): Meta {
   return {
     id,
     apple_id: `${app.trackId}`,
@@ -71,7 +65,7 @@ export function appleAppToAppMeta(
     icon_small: app.artworkUrl100,
     screenshots: app.screenshotUrls,
     genre: app.primaryGenreName,
-    release_date: app.releaseDate,
+    release_date: new Date(app.releaseDate),
     currency: app.currency,
     formatted_price: app.formattedPrice,
     price: app.price,

@@ -1,5 +1,4 @@
-import { supabase } from "#/db";
-import { APIError } from "#/lib/api-error";
+import { prisma } from "#/db";
 import { stripe } from "#/lib/api/billing";
 import {
   CHECKOUT_CANCEL_URL,
@@ -31,16 +30,12 @@ export default createEndpoint({
       cancel_url: CHECKOUT_CANCEL_URL,
     });
 
-    const { error } = await supabase.from("billing").insert({
-      app_id: app.id,
-      session_id: session.id,
+    await prisma.billing.create({
+      data: {
+        app_id: app.id,
+        session_id: session.id,
+      },
     });
-
-    if (error)
-      throw new APIError(
-        500,
-        "Could not create billing item for new checkout session."
-      );
 
     res.redirect(303, session.url ?? CHECKOUT_CANCEL_URL);
   },

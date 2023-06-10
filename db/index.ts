@@ -1,13 +1,27 @@
-import { createClient } from "@supabase/supabase-js";
-import { Database } from "./types";
+import { PrismaClient } from "@prisma/client";
+export const prisma = new PrismaClient();
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE;
+import type {
+  App,
+  Meta,
+  Contact,
+  Support,
+  Privacy,
+  Terms,
+  User,
+  Billing,
+} from "@prisma/client";
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE)
-  throw new Error("No supabase env present.");
+export type { Prisma } from "@prisma/client";
 
-export const supabase = createClient<Database>(
-  SUPABASE_URL,
-  SUPABASE_SERVICE_ROLE
-);
+export type Table =
+  | App
+  | Meta
+  | Contact
+  | Support
+  | Privacy
+  | Terms
+  | Billing
+  | User;
+export type { App, Meta, Contact, Support, Privacy, Terms, Billing, User };
+export type AppWithMeta = App & { meta?: Meta | null };

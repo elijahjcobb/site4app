@@ -1,4 +1,4 @@
-import { supabase } from "#/db";
+import { prisma } from "#/db";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { createPassword } from "#/lib/api/password";
@@ -37,23 +37,14 @@ export default createEndpoint<ApiResponseUserSignUp>({
 
     assertNonEmpty(name, "name");
 
-    const { data, error } = await supabase
-      .from("user")
-      .insert({
+    const user = await prisma.user.create({
+      data: {
         email,
         password,
         name: name.trim(),
-      })
-      .select();
+      },
+    });
 
-    if (error) {
-      if (error.code === "23505") {
-        throw new APIError(400, "An account with this email already exists.");
-      }
-      throw new APIError(500, undefined, error);
-    }
-
-    const user = data[0];
     const token = await tokenSign(user.id);
     setCookie30Day("authorization", token);
 

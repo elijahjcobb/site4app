@@ -1,5 +1,3 @@
-import { supabase } from "#/db";
-import { Database } from "#/db/types";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { App, fetchApp } from "#/lib/api/fetchers";

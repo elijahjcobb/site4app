@@ -1,14 +1,16 @@
-import { supabase } from "#/db";
-import { Database } from "#/db/types";
+import { prisma } from "#/db";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { isValidSlug } from "#/lib/api/is-valid-slug";
+import { withMutex } from "#/lib/api/mutex";
+import { verifyRateLimit } from "#/lib/api/rate-limit";
 import { verifyApp, verifyUser } from "#/lib/api/token";
 import { verifyBody } from "#/lib/api/verify-body";
 import { verifyQuery } from "#/lib/api/verify-query";
 import { assertNonEmpty } from "#/lib/assert-filled";
 import { App } from "#/lib/types/app";
 import { T } from "@elijahjcobb/typr";
+import { Prisma } from "@prisma/client";
 
 export interface ApiResponseAppCreate {
   app: App;
@@ -21,68 +23,75 @@ export default createEndpoint({
     res.json({ app });
   },
   POST: async ({ req, res }) => {
-    const {
-      name,
-      slug,
-      theme,
-      enable_contact,
-      enable_privacy,
-      enable_support,
-      enable_terms,
-    } = verifyBody(
-      req,
-      T.object({
-        name: T.string(),
-        slug: T.string(),
-        theme: T.optional(T.string()),
-        enable_support: T.optional(T.boolean()),
-        enable_privacy: T.optional(T.boolean()),
-        enable_contact: T.optional(T.boolean()),
-        enable_terms: T.optional(T.boolean()),
-      })
-    );
-
-    assertNonEmpty(name, "name");
-    assertNonEmpty(slug, "slug");
-
-    if (!isValidSlug(slug)) {
-      throw new APIError(
-        400,
-        "Slug must be any uppercase or lowercase letter, number or dash."
-      );
-    }
-
-    let nullableTheme = theme ?? null;
-    if (theme?.length === 0) nullableTheme = null;
-    if (nullableTheme) nullableTheme = nullableTheme.trim();
-
     const user = await verifyUser(req);
 
-    const { data, error } = await supabase
-      .from("app")
-      .insert({
-        name: name.trim(),
+    await verifyRateLimit(req, "200ms", user.id);
+
+    await withMutex("create-app", user.id, async () => {
+      const userFreeAppCount = await prisma.app.count({
+        where: {
+          owner_id: user.id,
+          is_pro: false,
+        },
+      });
+
+      if (userFreeAppCount >= 1) {
+        throw new APIError(
+          400,
+          "You can only have one free app. Please upgrade an app and try again."
+        );
+      }
+
+      const {
+        name,
         slug,
-        theme: nullableTheme,
+        theme,
         enable_contact,
         enable_privacy,
         enable_support,
         enable_terms,
-        owner_id: user.id,
-      })
-      .select();
+      } = verifyBody(
+        req,
+        T.object({
+          name: T.string(),
+          slug: T.string(),
+          theme: T.optional(T.string()),
+          enable_support: T.optional(T.boolean()),
+          enable_privacy: T.optional(T.boolean()),
+          enable_contact: T.optional(T.boolean()),
+          enable_terms: T.optional(T.boolean()),
+        })
+      );
 
-    if (error) {
-      if (error.code === "23505") {
-        throw new APIError(400, "This slug is already taken.");
+      assertNonEmpty(name, "name");
+      assertNonEmpty(slug, "slug");
+
+      if (!isValidSlug(slug)) {
+        throw new APIError(
+          400,
+          "Slug must be any uppercase or lowercase letter, number or dash."
+        );
       }
-      throw error;
-    }
-    const app = data[0];
-    if (!app)
-      throw new APIError(500, "App that was just created is undefined.");
 
-    res.json({ app });
+      let nullableTheme = theme ?? null;
+      if (theme?.length === 0) nullableTheme = null;
+      if (nullableTheme) nullableTheme = nullableTheme.trim();
+
+      const app = await prisma.app.create({
+        data: {
+          name: name.trim(),
+          slug,
+          theme: nullableTheme,
+          enable_contact,
+          enable_privacy,
+          enable_support,
+          enable_terms,
+          owner_id: user.id,
+        },
+      });
+
+      res.json({ app });
+    });
   },
   PUT: async ({ req, res }) => {
     const body = verifyBody(
@@ -113,12 +122,11 @@ export default createEndpoint({
 
     const user = await verifyUser(req);
     const app = await verifyApp(req, user.id);
+    const updates: Prisma.AppUpdateArgs["data"] = {};
 
     if (user.id !== app.owner_id) {
       throw new APIError(400, "App not found.");
     }
-
-    const updates: Partial<Database["public"]["Tables"]["app"]["Update"]> = {};
 
     if (name) {
       assertNonEmpty(name, "name");
@@ -160,20 +168,12 @@ export default createEndpoint({
     if (Object.keys(updates).length === 0)
       throw new APIError(400, "You did not provide any updates.");
 
-    const { data, error } = await supabase
-      .from("app")
-      .update(updates)
-      .eq("id", app.id)
-      .select();
-
-    if (error) {
-      if (error.code === "23505") {
-        throw new APIError(400, "This slug is already taken.");
-      }
-      throw error;
-    }
-    const updatedApp = data[0];
-    if (!updatedApp) throw new APIError(500, "Failed to update app.");
+    const updatedApp = await prisma.app.update({
+      data: updates,
+      where: {
+        id: app.id,
+      },
+    });
 
     res.json({ app: updatedApp });
   },

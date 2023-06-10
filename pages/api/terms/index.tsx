@@ -1,5 +1,4 @@
-import { supabase } from "#/db";
-import { APIError } from "#/lib/api-error";
+import { prisma } from "#/db";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { Terms, fetchTerms } from "#/lib/api/fetchers";
 import { verifyApp, verifyUser } from "#/lib/api/token";
@@ -26,18 +25,18 @@ export default createEndpoint<ApiResponseTerms>({
 		const user = await verifyUser(req);
 		const app = await verifyApp(req, user.id);
 
-		const { data, error } = await supabase
-			.from("terms")
-			.upsert({
+		const terms = await prisma.terms.upsert({
+			where: {
+				id: app.id
+			},
+			create: {
 				id: app.id,
 				value
-			})
-			.select();
-
-		const terms = data?.[0];
-		if (error || !terms) {
-			throw new APIError(500, "Failed to save terms.", error);
-		}
+			},
+			update: {
+				value
+			}
+		});
 
 		await res.revalidate(`/${app.slug}/terms`);
 		res.json({ value: terms })

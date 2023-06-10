@@ -1,4 +1,4 @@
-import { supabase } from "#/db";
+import { prisma } from "#/db";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { verifyUser } from "#/lib/api/token";
@@ -32,15 +32,11 @@ export default createEndpoint<ApiResponseApp>({
 
     const user = await verifyUser(req);
 
-    const { data: appData, error: appError } = await supabase
-      .from("app")
-      .select()
-      .eq("id", appId);
-
-    const app = appData?.[0];
-    if (appError || !app) {
-      throw new APIError(400, "App does not exist.", appError);
-    }
+    const app = await prisma.app.findUniqueOrThrow({
+      where: {
+        id: appId,
+      },
+    });
 
     if (app.owner_id !== user.id)
       throw new APIError(400, "App does not exist.");
@@ -59,16 +55,13 @@ export default createEndpoint<ApiResponseApp>({
     const appleApp = appleResBody.results[0];
     if (!appleApp) throw new APIError(400, `No app exists for id: '${appId}'.`);
 
-    const { data, error } = await supabase
-      .from("app_meta")
-      .upsert(appleAppToAppMeta(appleApp, app.id))
-      .select();
+    const metadata = appleAppToAppMeta(appleApp, app.id);
 
-    const appMeta = data?.[0];
-
-    if (error || !appMeta) {
-      throw new APIError(500, "Failed to upsert data.", error);
-    }
+    const appMeta = await await prisma.meta.upsert({
+      update: metadata,
+      create: metadata,
+      where: { id: app.id },
+    });
 
     res.json({
       app,

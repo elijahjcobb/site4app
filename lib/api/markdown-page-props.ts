@@ -1,106 +1,141 @@
-import { supabase } from "#/db";
+import { prisma, type App, type Meta } from "#/db";
 import matter from "gray-matter";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { remark } from "remark";
-import { App, AppMeta } from "../types/app";
 import html from "remark-html";
 
 export interface MarkdownPageProps {
   app: App;
-  meta: AppMeta;
+  meta: Meta;
   markdown: string;
 }
 
-export const markdownPageStaticPaths = (
-  type: "privacy" | "terms"
-): GetStaticPaths => {
+export const privacyStaticPaths = (): GetStaticPaths => {
   return async () => {
-    const { data, error } = await supabase
-      .from("app")
-      .select(
-        `
-			id,
-			slug,
-			enable_privacy,
-			enable_terms,
-			${type} (
-				id,
-				created_at
-			)
-		`
-      )
-      .eq(type === "privacy" ? "enable_privacy" : "enable_terms", true);
+    const data = await prisma.privacy.findMany({
+      where: {
+        app: {
+          enable_privacy: true,
+        },
+      },
+      include: {
+        app: true,
+      },
+    });
 
-    if (error) throw error;
-    if (!data) throw new Error("No data for paths.");
-
-    // @ts-expect-error
-    const items = data.filter((v) => v["privacy"] !== null);
+    const items = data.filter((v) => v.value !== null);
 
     return {
-      paths: items.map((row) => ({ params: { slug: row.slug } })),
+      paths: items.map((row) => ({ params: { slug: row.app.slug } })),
       fallback: "blocking",
     };
   };
 };
 
-export const markdownPageStaticProps = (
-  type: "privacy" | "terms"
-): GetStaticProps<MarkdownPageProps> => {
-  return async (context) => {
-    const slug = context.params?.slug;
-    if (!slug)
-      return {
-        notFound: true,
-      };
+export const termsStaticPaths = (): GetStaticPaths => {
+  return async () => {
+    const data = await prisma.terms.findMany({
+      where: {
+        app: {
+          enable_terms: true,
+        },
+      },
+      include: {
+        app: true,
+      },
+    });
 
-    const { data, error } = await supabase
-      .from("app")
-      .select()
-      .eq("slug", slug);
-    const app = data?.[0];
-    if (error || !app) {
-      return { notFound: true };
-    }
-
-    const { data: metaData, error: metaError } = await supabase
-      .from("app_meta")
-      .select()
-      .eq("id", app.id);
-    const meta = metaData?.[0];
-    if (metaError || !meta) {
-      return { notFound: true };
-    }
-
-    if (
-      (type === "privacy" && !app.enable_privacy) ||
-      (type === "terms" && !app.enable_terms)
-    ) {
-      return { notFound: true };
-    }
-
-    const { data: markdownData, error: markdownError } = await supabase
-      .from(type)
-      .select()
-      .eq("id", app.id);
-
-    const privacy = markdownData?.[0];
-    if (markdownError || !privacy) {
-      return { notFound: true };
-    }
-
-    const matterResult = matter(privacy.value);
-    const processedContent = await remark()
-      .use(html)
-      .process(matterResult.content);
-    const markdown = processedContent.toString();
+    const items = data.filter((v) => v.value !== null);
 
     return {
-      props: {
-        app,
-        meta,
-        markdown,
-      },
+      paths: items.map((row) => ({ params: { slug: row.app.slug } })),
+      fallback: "blocking",
     };
+  };
+};
+
+export const privacyStaticProps = (): GetStaticProps<MarkdownPageProps> => {
+  return async (context) => {
+    try {
+      const slug = context.params?.slug;
+      if (!slug || typeof slug !== "string") throw new Error("Invalid slug");
+
+      const app = await prisma.app.findUniqueOrThrow({
+        where: {
+          slug,
+        },
+      });
+
+      const meta = await prisma.meta.findUniqueOrThrow({
+        where: { id: app.id },
+      });
+
+      if (!app.enable_privacy)
+        throw new Error("Privacy is not enabled for this app.");
+
+      const privacy = await prisma.privacy.findUniqueOrThrow({
+        where: { id: app.id },
+      });
+
+      const matterResult = matter(privacy.value);
+      const processedContent = await remark()
+        .use(html)
+        .process(matterResult.content);
+      const markdown = processedContent.toString();
+
+      return {
+        props: {
+          app,
+          meta,
+          markdown,
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      return { notFound: true };
+    }
+  };
+};
+
+export const termsStaticProps = (): GetStaticProps<MarkdownPageProps> => {
+  return async (context) => {
+    try {
+      const slug = context.params?.slug;
+      if (!slug || typeof slug !== "string") throw new Error("Invalid slug");
+
+      const app = await prisma.app.findUniqueOrThrow({
+        where: {
+          slug,
+        },
+      });
+
+      const meta = await prisma.meta.findUniqueOrThrow({
+        where: { id: app.id },
+      });
+
+      if (!app.enable_terms)
+        throw new Error("Terms is not enabled for this app.");
+
+      const terms = await prisma.terms.findUniqueOrThrow({
+        where: { id: app.id },
+      });
+
+      const matterResult = matter(terms.value);
+      const processedContent = await remark()
+        .use(html)
+        .process(matterResult.content);
+      const markdown = processedContent.toString();
+
+      return {
+        props: {
+          app,
+          meta,
+          markdown,
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      return { notFound: true };
+    }
   };
 };

@@ -1,20 +1,22 @@
 import { AppProviderProps } from "#/components/client/app-provider";
-import { supabase } from "#/db";
+import { type Prisma, prisma } from "#/db";
 import { GetStaticPaths, GetStaticProps } from "next";
 
 export const clientGetStaticPathsWithFilter: (
   type?: "enable_contact" | "enable_privacy" | "enable_terms" | "enable_support"
 ) => GetStaticPaths = (type) => {
   return async () => {
-    let builder = supabase.from("app").select(`slug`);
-    if (type) builder = builder.eq(type, true);
-    const { data, error } = await builder;
-
-    if (error) throw error;
-    if (!data) throw new Error("No paths to generate!");
+    const where: Partial<Prisma.AppWhereInput> = {};
+    if (type) where[type] = true;
+    const paths = await prisma.app.findMany({
+      select: {
+        slug: true,
+      },
+      where,
+    });
 
     return {
-      paths: data.map((app) => ({ params: { slug: app.slug } })),
+      paths: paths.map((app) => ({ params: { slug: app.slug } })),
       fallback: "blocking",
     };
   };
@@ -28,25 +30,30 @@ export const clientGetStaticPropsWithFilter: (
 ) => GetStaticProps<AppProviderProps> = (type) => {
   return async (context) => {
     const slug = context.params?.slug;
-    if (!slug)
+    if (!slug || typeof slug !== "string")
       return {
         notFound: true,
       };
 
-    let builder = supabase.from("app").select().eq("slug", slug);
-    if (type) builder = builder.eq(type, true);
-    const { data, error } = await builder;
-    const app = data?.[0];
-    if (error || !app) {
+    const where: Partial<Prisma.AppWhereInput> = {};
+    if (type) where[type] = true;
+    const app = await prisma.app.findFirst({
+      where: {
+        ...where,
+        slug,
+      },
+    });
+    if (!app) {
       return { notFound: true };
     }
 
-    const { data: metaData, error: metaError } = await supabase
-      .from("app_meta")
-      .select()
-      .eq("id", app.id);
-    const meta = metaData?.[0];
-    if (metaError || !meta) {
+    const meta = await prisma.meta.findUnique({
+      where: {
+        id: app.id,
+      },
+    });
+
+    if (!meta) {
       return { notFound: true };
     }
 

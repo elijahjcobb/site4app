@@ -1,6 +1,7 @@
 import { T } from "@elijahjcobb/typr";
-import { Billing, fetchBillingForCustomerId } from "../fetchers";
+import { fetchBillingForCustomerId } from "../fetchers";
 import type { StripeEvent } from ".";
+import type { Billing } from "#/db";
 
 export async function fetchBillingFromEvent(
   event: StripeEvent

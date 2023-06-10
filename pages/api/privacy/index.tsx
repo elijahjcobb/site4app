@@ -1,4 +1,4 @@
-import { supabase } from "#/db";
+import { prisma } from "#/db";
 import { APIError } from "#/lib/api-error";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { Privacy, Terms, fetchPrivacy, fetchTerms } from "#/lib/api/fetchers";
@@ -26,18 +26,18 @@ export default createEndpoint<ApiResponsePrivacy>({
 		const user = await verifyUser(req);
 		const app = await verifyApp(req, user.id);
 
-		const { data, error } = await supabase
-			.from("privacy")
-			.upsert({
+		const privacy = await prisma.privacy.upsert({
+			where: {
+				id: app.id
+			},
+			create: {
 				id: app.id,
 				value
-			})
-			.select();
-
-		const privacy = data?.[0];
-		if (error || !privacy) {
-			throw new APIError(500, "Failed to save privacy.", error);
-		}
+			},
+			update: {
+				value
+			}
+		});
 
 		await res.revalidate(`/${app.slug}/privacy`);
 		res.json({ value: privacy })

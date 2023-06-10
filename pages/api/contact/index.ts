@@ -1,4 +1,4 @@
-import { supabase } from "#/db";
+import { prisma } from "#/db";
 import { createEndpoint } from "#/lib/api/create-endpoint";
 import { verifyBody } from "#/lib/api/verify-body";
 import { T } from "@elijahjcobb/typr";
@@ -16,14 +16,16 @@ export default createEndpoint<{}>({
       })
     );
 
-    await supabase.from("contact").insert({
-      app_id: id,
-      name: name.length === 0 ? null : name,
-      email: email.length === 0 ? null : email,
-      type,
-      message,
+    const contact = await prisma.contact.create({
+      data: {
+        app_id: id,
+        name: name.length === 0 ? null : name,
+        email: email.length === 0 ? null : email,
+        type,
+        message,
+      },
     });
 
-    res.status(200).json({});
+    res.status(201).json({ id: contact.id });
   },
 });
