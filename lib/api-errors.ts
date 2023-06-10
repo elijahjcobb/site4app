@@ -12,4 +12,7 @@ export const API_ERROR_CODES = [
   "authenticated_token_invalid",
   "authenticated_token_expired",
   "invalid_type",
+  "invalid_email_or_password",
+  "resource_limit_reached",
+  "invalid_regex",
 ] as const

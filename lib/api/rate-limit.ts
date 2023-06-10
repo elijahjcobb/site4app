@@ -1,4 +1,5 @@
-import type { NextApiRequest } from "next"
+import { NextRequest } from "next/server"
+import { User } from "@/db"
 
 import { APIError } from "../api-error"
 import { redis } from "./redis"
@@ -8,34 +9,33 @@ const RATE_LIMIT_KEY = "rate-limit"
 type TimeUnit = "s" | "ms"
 type ValidTime = `${number}${TimeUnit}`
 
-function secondsFromTimeString(timeString: ValidTime): number {
+function millisecondsFromTimeString(timeString: ValidTime): number {
   if (timeString.endsWith("ms")) {
-    return parseFloat(timeString.replace("ms", "")) / 1000
+    return parseInt(timeString.replace("ms", ""))
+  } else {
+    return parseInt(timeString.replace("s", "")) * 1000
   }
-  return parseFloat(timeString.replace("s", ""))
 }
 
-export async function verifyRateLimit({
-  throttleTime,
-  key,
-  req,
-  identifier,
-}: {
+export const GLOBAL_RATE_LIMIT = "global"
+
+export async function verifyRateLimit(
+  req: NextRequest,
+  identifier: User | string,
   throttleTime: ValidTime
-  key: string
-  req: NextApiRequest
-  identifier?: string
-}): Promise<void> {
-  const id = identifier ?? req.socket.remoteAddress ?? "*"
-  const uniqueKey = `${RATE_LIMIT_KEY}:${key}:${id}`
+): Promise<void> {
+  const path = `${req.method}${req.nextUrl.pathname}`
+  const userId = typeof identifier === "string" ? identifier : identifier.id
+  const id = userId ?? req.ip ?? "*"
+  const uniqueKey = `${RATE_LIMIT_KEY}:${path}:${id}`
   const hasRateLimit = Boolean(await redis.exists(uniqueKey))
-  const throttleTimeS = secondsFromTimeString(throttleTime)
-  if (!hasRateLimit) {
+  const throttleTimeMS = millisecondsFromTimeString(throttleTime)
+  if (hasRateLimit) {
     throw new APIError({
       statusCode: 429,
       code: "rate_limit",
-      message: `You have made too many requests. Please wait ${throttleTimeS} seconds.`,
+      message: `You have made too many requests. Please wait ${throttleTimeMS.toLocaleString()} milliseconds since last successful request.`,
     })
   }
-  await redis.set(uniqueKey, "1", { ex: throttleTimeS })
+  await redis.set(uniqueKey, "1", { px: throttleTimeMS })
 }

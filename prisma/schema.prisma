@@ -18,6 +18,8 @@ model User {
   password String
   name String
   apps App[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model App {
@@ -38,6 +40,8 @@ model App {
   privacy Privacy?
   support Support[]
   terms Terms?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Meta {
@@ -60,6 +64,8 @@ model Meta {
   release_date DateTime
   screenshots String[]
   version String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Billing {
@@ -72,18 +78,24 @@ model Billing {
   has_ended Boolean @default(false)
   session_id String
   will_end Boolean @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Contact {
   id String @id @default(uuid())
   app_id String
   app App @relation(fields: [app_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Privacy {
   id String @id @default(uuid())
   value String
   app App @relation(fields: [id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Support {
@@ -91,10 +103,14 @@ model Support {
   value String
   app_id String
   app App @relation(fields: [app_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Terms {
   id String @id @default(uuid())
   value String
   app App @relation(fields: [id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

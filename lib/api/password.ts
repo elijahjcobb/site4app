@@ -1,25 +1,18 @@
-import { KrBcrypt } from "@element-ts/krypton";
+import { compare, hash } from "bcrypt"
 
-const CODING = "base64";
-const SEP = "&";
+const SALT_ITERATION = 10
 
 export async function createPassword(rawPassword: string): Promise<string> {
-  const ret = await KrBcrypt.createPassword(rawPassword);
-  const pepper = ret.password.toString(CODING);
-  const salt = ret.salt.toString(CODING);
-  return `${salt}${SEP}${pepper}`;
+  return await hash(rawPassword, SALT_ITERATION)
 }
 
 export async function verifyPassword(
   rawPassword: string,
   password: string
 ): Promise<boolean> {
-  const [saltString, pepperString] = password.split(SEP);
-  const pepper = Buffer.from(pepperString, CODING);
-  const salt = Buffer.from(saltString, CODING);
   try {
-    return await KrBcrypt.verifyPassword(rawPassword, pepper, salt);
+    return await compare(rawPassword, password)
   } catch {
-    return false;
+    return false
   }
 }

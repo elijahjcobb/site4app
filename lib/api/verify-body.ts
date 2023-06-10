@@ -6,7 +6,7 @@ export async function verifyBody<T>(
   req: NextRequest,
   type: TType<T>
 ): Promise<T> {
-  let b = req.json()
+  let b = await req.json()
   const body = type.verify(b)
   if (!body)
     throw new APIError({

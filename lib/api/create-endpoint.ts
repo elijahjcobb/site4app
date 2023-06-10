@@ -21,7 +21,7 @@ export function createEndpoint<T extends Record<string, unknown>>(
         return new APIError({
           statusCode: 500,
           code: "internal_server_error",
-          message: "Intern server error.",
+          message: "Internal server error.",
         }).toResponse()
       }
     }

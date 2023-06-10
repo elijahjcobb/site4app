@@ -1,3 +1,4 @@
+import { User } from "@/db"
 import Redis from "ioredis"
 import { Mutex } from "redis-semaphore"
 
@@ -14,10 +15,11 @@ export function generateMutex(identifier: MutexKey | string): Mutex {
 
 export async function withMutex<T>(
   identifier: MutexKey,
-  owner: string,
+  owner: User | string,
   handler: () => Promise<T>
 ): Promise<T> {
-  const mutex = generateMutex(`${identifier}:${owner}`)
+  const ownerId = typeof owner === "string" ? owner : owner.id
+  const mutex = generateMutex(`${identifier}:${ownerId}`)
   try {
     await mutex.acquire()
     return await handler()
