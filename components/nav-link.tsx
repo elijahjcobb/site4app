@@ -12,6 +12,7 @@ export function NavLink({ item }: { item: NavItem }): JSX.Element {
 	const pathname = useMemo<string>(() => `/dashboard${item.href}`, [item.href]);
 
 	const isOnPath = useMemo<boolean>(() => {
+		if (currentPath.startsWith("/dashboard/settings") && item.href?.startsWith("/settings")) return true;
 		return currentPath.replace("/dashboard", "") === item.href;
 	}, [currentPath, item.href]);
 

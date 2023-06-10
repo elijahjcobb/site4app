@@ -1,0 +1,15 @@
+export const API_ERROR_CODES = [
+  "internal_server_error",
+  "not_found",
+  "rate_limit",
+  "invalid_body",
+  "invalid_search_parameters",
+  "app_not_authenticated",
+  "user_not_authenticated",
+  "authenticated_user_not_valid",
+  "authenticated_app_not_valid",
+  "no_token",
+  "authenticated_token_invalid",
+  "authenticated_token_expired",
+  "invalid_type",
+] as const

@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique @db.VarChar(255)
+  password String
+  name String
+  apps App[]
+}
+
+model App {
+  id String @id @default(uuid())
+  enable_contact Boolean @default(false)
+  enable_privacy Boolean @default(false)
+  enable_support Boolean @default(false)
+  enable_terms Boolean @default(false)
+  is_pro Boolean @default(false)
+  name String
+  slug String @unique @db.VarChar(255)
+  owner_id String
+  theme String?
+  owner User @relation(fields: [owner_id], references: [id])
+  meta Meta?
+  billings Billing[]
+  contacts Contact[]
+  privacy Privacy?
+  support Support[]
+  terms Terms?
+}
+
+model Meta {
+  app App @relation(fields: [id], references: [id])
+  id String @id @default(uuid())
+  age_restriction String
+  apple_id String
+  currency String
+  description String
+  developer String
+  developer_id String
+  formatted_price String
+  genre String
+  icon String
+  icon_small String
+  name String
+  price Int
+  rating Float
+  rating_count Int
+  release_date DateTime
+  screenshots String[]
+  version String
+}
+
+model Billing {
+  id String @id @default(uuid())
+  app_id String
+  app App @relation(fields: [app_id], references: [id])
+  cancel_at Int?
+  canceled_at Int?
+  customer_id String?
+  has_ended Boolean @default(false)
+  session_id String
+  will_end Boolean @default(false)
+}
+
+model Contact {
+  id String @id @default(uuid())
+  app_id String
+  app App @relation(fields: [app_id], references: [id])
+}
+
+model Privacy {
+  id String @id @default(uuid())
+  value String
+  app App @relation(fields: [id], references: [id])
+}
+
+model Support {
+  id String @id @default(uuid())
+  value String
+  app_id String
+  app App @relation(fields: [app_id], references: [id])
+}
+
+model Terms {
+  id String @id @default(uuid())
+  value String
+  app App @relation(fields: [id], references: [id])
+}
