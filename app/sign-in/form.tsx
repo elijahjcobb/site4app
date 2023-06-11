@@ -20,32 +20,24 @@ import { useFetcher } from "@/lib/front/fetcher"
 import { useRouter } from "next/navigation"
 import { noop } from "lodash"
 
-const signUpFormSchema = z.object({
-	name: z
-		.string()
-		.min(2, {
-			message: "Name must be at least 2 characters.",
-		})
-		.max(32, {
-			message: "Name must not be longer than 32 characters.",
-		}),
+const signInFormSchema = z.object({
 	email: z.string().email(),
 	password: z.string().min(8, "Password must be at least 8 characters").max(256, "Password cannot be longer than 256 characters")
 })
 
-type AccountFormValues = z.infer<typeof signUpFormSchema>
+type AccountFormValues = z.infer<typeof signInFormSchema>
 
-export function SignUpForm() {
+export function SignInForm() {
 	const router = useRouter();
 	const [fetcher, isLoading] = useFetcher();
 
 	const form = useForm<AccountFormValues>({
-		resolver: zodResolver(signUpFormSchema),
+		resolver: zodResolver(signInFormSchema),
 	})
 
 	const onSubmit = useCallback((data: AccountFormValues) => {
 		fetcher({
-			path: "/user/sign-up",
+			path: "/user/sign-in",
 			method: "POST",
 			body: data
 		}).then(() => {
@@ -56,23 +48,6 @@ export function SignUpForm() {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Name</FormLabel>
-							<FormControl>
-								<Input disabled={isLoading} placeholder="Your name" {...field} />
-							</FormControl>
-							<FormDescription>
-								This is the name that will be displayed on your profile and in
-								emails.
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
 				<FormField
 					control={form.control}
 					name="email"
@@ -107,7 +82,7 @@ export function SignUpForm() {
 						</FormItem>
 					)}
 				/>
-				<Button disabled={isLoading} type="submit">Sign Up</Button>
+				<Button disabled={isLoading} type="submit">Sign In</Button>
 			</form>
 		</Form>
 	)

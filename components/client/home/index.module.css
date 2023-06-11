@@ -1,0 +1,6 @@
+.page {
+  width: 100%;
+  max-width: var(--bp-desktop);
+  margin: auto;
+  padding: var(--sp2);
+}

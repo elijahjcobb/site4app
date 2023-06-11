@@ -38,24 +38,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
+import { useFetcher } from "@/lib/front/fetcher"
+import { useEffect } from "react"
+import type { App } from "@/db"
+import { getCookie } from "cookies-next"
+import { Skeleton } from "../ui/skeleton"
 
-const groups = [
-	{
-		label: "Apps",
-		apps: [
-			{
-				label: "Acme Inc.",
-				value: "acme-inc",
-			},
-			{
-				label: "Monsters Inc.",
-				value: "monsters",
-			}
-		],
-	},
-]
-
-type App = (typeof groups)[number]["apps"][number]
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
@@ -64,9 +52,24 @@ interface AppSwitcherProps extends PopoverTriggerProps { }
 export default function AppSwitcher({ className }: AppSwitcherProps) {
 	const [open, setOpen] = React.useState(false)
 	const [showNewAppDialog, setShowNewAppDialog] = React.useState(false)
-	const [selectedApp, setSelectedApp] = React.useState<App>(
-		groups[0].apps[0]
-	)
+	const [apps, setApps] = React.useState<App[]>([]);
+	const [selectedApp, setSelectedApp] = React.useState<App | null>(null)
+
+	const [fetcher, isLoading] = useFetcher({ initialLoading: true });
+
+	useEffect(() => {
+		fetcher<App[]>({
+			path: "/user/apps",
+			method: "GET"
+		}).then((apps) => {
+			setApps(apps);
+			const appId = getCookie("appId");
+			const app = apps.find((app) => app.id === appId);
+			if (app) setSelectedApp(app);
+		}).catch(console.error);
+	}, [fetcher]);
+
+	if (isLoading) return <Skeleton className="h-[36px] w-[200px] border border-input" />
 
 	return (
 		<Dialog open={showNewAppDialog} onOpenChange={setShowNewAppDialog}>
@@ -82,12 +85,12 @@ export default function AppSwitcher({ className }: AppSwitcherProps) {
 					>
 						<Avatar className="mr-2 h-5 w-5">
 							<AvatarImage
-								src={`https://avatar.vercel.sh/${selectedApp.value}.png`}
-								alt={selectedApp.label}
+								src={`https://avatar.vercel.sh/${selectedApp?.id}.png`}
+								alt={selectedApp?.name}
 							/>
 							<AvatarFallback>SC</AvatarFallback>
 						</Avatar>
-						{selectedApp.label}
+						{selectedApp?.name}
 						<ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
 					</Button>
 				</PopoverTrigger>
@@ -96,37 +99,35 @@ export default function AppSwitcher({ className }: AppSwitcherProps) {
 						<CommandList>
 							<CommandInput placeholder="Search app..." />
 							<CommandEmpty>No app found.</CommandEmpty>
-							{groups.map((group) => (
-								<CommandGroup key={group.label}>
-									{group.apps.map((app) => (
-										<CommandItem
-											key={app.value}
-											onSelect={() => {
-												setSelectedApp(app)
-												setOpen(false)
-											}}
-											className="text-sm"
-										>
-											<Avatar className="mr-2 h-5 w-5">
-												<AvatarImage
-													src={`https://avatar.vercel.sh/${app.value}.png`}
-													alt={app.label}
-												/>
-												<AvatarFallback>SC</AvatarFallback>
-											</Avatar>
-											{app.label}
-											<Check
-												className={cn(
-													"ml-auto h-4 w-4",
-													selectedApp.value === app.value
-														? "opacity-100"
-														: "opacity-0"
-												)}
+							<CommandGroup>
+								{apps.map((app) => (
+									<CommandItem
+										key={app.id}
+										onSelect={() => {
+											setSelectedApp(app)
+											setOpen(false)
+										}}
+										className="text-sm"
+									>
+										<Avatar className="mr-2 h-5 w-5">
+											<AvatarImage
+												src={`https://avatar.vercel.sh/${app.id}.png`}
+												alt={app.name}
 											/>
-										</CommandItem>
-									))}
-								</CommandGroup>
-							))}
+											<AvatarFallback>SC</AvatarFallback>
+										</Avatar>
+										{app.name}
+										<Check
+											className={cn(
+												"ml-auto h-4 w-4",
+												selectedApp?.id === app.id
+													? "opacity-100"
+													: "opacity-0"
+											)}
+										/>
+									</CommandItem>
+								))}
+							</CommandGroup>
 						</CommandList>
 						<CommandSeparator />
 						<CommandList>

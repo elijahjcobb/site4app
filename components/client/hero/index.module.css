@@ -1,0 +1,15 @@
+.hero {
+}
+
+.screenshots {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--sp4);
+  padding: var(--sp2) 0;
+}
+
+.screenshot {
+  border-radius: var(--sp3);
+  border: solid 1px var(--acc2);
+  box-shadow: 0 0 8px var(--acc1);
+}

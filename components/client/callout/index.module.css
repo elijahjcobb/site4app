@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--acc1);
+  border: solid 1px var(--acc2);
+  padding: var(--sp4) var(--sp4);
+  border-radius: var(--sp2);
+}
+
+.cta {
+  background: var(--pri);
+  text-decoration: none;
+  font-family: var(--font-grotesk);
+  padding: var(--sp2) var(--sp4);
+  border: solid 1px var(--acc2);
+  border-radius: var(--sp);
+  transition: var(--trans);
+  color: black;
+}
+
+.cta:hover {
+  background: var(--acc2);
+  color: var(--fg);
+}

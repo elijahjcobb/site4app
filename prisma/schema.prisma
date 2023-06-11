@@ -100,7 +100,8 @@ model Privacy {
 
 model Support {
   id String @id @default(uuid())
-  value String
+  question String
+  answer String
   app_id String
   app App @relation(fields: [app_id], references: [id])
   created_at DateTime @default(now())

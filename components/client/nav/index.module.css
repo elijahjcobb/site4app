@@ -1,0 +1,188 @@
+.nav {
+  width: 100%;
+  gap: var(--sp4);
+  --height: 84px;
+  height: var(--height);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+}
+
+.nav,
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  color: var(--fg);
+  text-decoration: none;
+  gap: var(--sp2);
+  flex-grow: 1;
+}
+
+.title:hover,
+.badge:hover {
+  background: none;
+  color: var(--fg);
+}
+
+.icon {
+  border-radius: 25%;
+}
+
+.name {
+  font-family: var(--font-grotesk);
+  font-size: 2rem;
+}
+
+.title,
+.badge {
+  flex-shrink: 0;
+}
+
+.links {
+  list-style: none;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.link {
+  font-family: var(--font-grotesk);
+  font-size: 1.125rem;
+  text-decoration: none;
+  color: var(--fg);
+  transition: var(--trans);
+  padding: var(--sp2);
+  border-radius: var(--sp);
+  border: solid 1px rgba(0, 0, 0, 0);
+}
+
+.link:hover {
+  background: var(--pri);
+  color: black;
+  border-color: var(--acc2);
+}
+
+.links,
+.badge {
+  display: none;
+}
+
+.badge {
+  transition: var(--trans-slow);
+}
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+.hamburger {
+  flex-shrink: 0;
+  background: none;
+  outline: none;
+  border: none;
+  transition: var(--trans);
+}
+
+.hamburger:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.hamburgerIcon {
+  color: var(--fg);
+  width: var(--sp4);
+  height: var(--sp4);
+}
+
+@media (min-width: 480px) {
+  .badge {
+    display: block;
+  }
+}
+
+.mobileNav {
+  --top: calc(var(--height));
+  position: absolute;
+  padding-top: var(--sp);
+  top: var(--top);
+  width: 100%;
+  height: calc(100vh - var(--top));
+  background: var(--bg);
+  left: calc(100% + var(--sp2));
+  list-style: none;
+  display: none;
+  flex-direction: column;
+  transition: var(--trans-slow);
+  z-index: 10;
+}
+
+.mobileItem {
+  width: 100%;
+  border-top: 1px solid var(--acc2);
+}
+
+.mobileInner {
+  padding: var(--sp2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+}
+
+.mobileInner:hover {
+  background: none;
+}
+
+.mobileInner span {
+  font-family: var(--font-grotesk);
+  font-size: 1.125rem;
+}
+
+.showMobileNav {
+  display: flex;
+  animation: moveIn 250ms ease-in-out 40ms forwards;
+}
+
+@keyframes moveIn {
+  from {
+    left: calc(100% + var(--sp2));
+  }
+  to {
+    left: 0;
+  }
+}
+
+.mobileBadge {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: var(--sp2);
+}
+
+@media (min-width: 480px) {
+  .mobileBadge {
+    display: none;
+  }
+}
+
+.mobileBadge:hover {
+  background: none;
+  transform: scale(1.05);
+}
+
+@media (min-width: 840px) {
+  .hamburger {
+    display: none;
+  }
+  .mobileNav {
+    display: none;
+  }
+  .links {
+    display: flex;
+  }
+}
