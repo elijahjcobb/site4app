@@ -9,11 +9,12 @@ import { verifyRateLimit } from "@/lib/api/rate-limit"
 import { verifyApp, verifyUser } from "@/lib/api/token"
 import { verifyBody } from "@/lib/api/verify-body"
 import { assertNonEmpty } from "@/lib/assert-filled"
+import { pickApp } from "@/lib/pick"
 
 export const GET = createEndpoint(async (req) => {
   const user = await verifyUser(req)
-  const app = await verifyApp(req, user.id)
-  return NextResponse.json({ app })
+  const app = await verifyApp(req, user)
+  return NextResponse.json(pickApp(app))
 })
 
 export const POST = createEndpoint(async (req) => {

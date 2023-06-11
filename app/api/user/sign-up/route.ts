@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/db"
+import { User, prisma } from "@/db"
 import { T } from "@elijahjcobb/typr"
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
 import { APIError } from "@/lib/api-error"
 import { createEndpoint } from "@/lib/api/create-endpoint"
@@ -34,13 +35,27 @@ export const POST = createEndpoint(async (req) => {
   assertNonEmpty(name, "name")
 
   const password = await createPassword(rawPassword)
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password,
-      name: name.trim(),
-    },
-  })
+
+  let user: User
+
+  try {
+    user = await prisma.user.create({
+      data: {
+        email,
+        password,
+        name: name.trim(),
+      },
+    })
+  } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError && e.code === "P2002") {
+      throw new APIError({
+        statusCode: 400,
+        message: "A user with this email already exists.",
+        code: "already_exists",
+      })
+    }
+    throw e
+  }
 
   const token = await tokenSign(user.id)
 

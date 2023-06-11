@@ -1,9 +1,10 @@
-import { fetchBillingFromEvent } from "./fetch-billing";
-import { StripeEvent } from ".";
-import { prisma } from "#/db";
+import { prisma } from "@/db"
+
+import { StripeEvent } from "."
+import { fetchBillingFromEvent } from "./fetch-billing"
 
 export async function subscriptionCreated(event: StripeEvent): Promise<void> {
-  const billing = await fetchBillingFromEvent(event);
+  const billing = await fetchBillingFromEvent(event)
 
   await prisma.app.update({
     data: {
@@ -12,5 +13,5 @@ export async function subscriptionCreated(event: StripeEvent): Promise<void> {
     where: {
       id: billing.app_id,
     },
-  });
+  })
 }

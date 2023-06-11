@@ -1,5 +1,3 @@
-const HOST = process.env.HOST;
+const HOST = process.env.VERCEL_URL ?? "localhost:3000"
 
-if (!HOST) throw new Error("HOST not defined in env.");
-
-export { HOST };
+export { HOST }

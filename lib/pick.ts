@@ -1,4 +1,4 @@
-import { App, User } from "@/db"
+import { App, AppWithMeta, Billing, Meta, Privacy, Terms, User } from "@/db"
 import _ from "lodash"
 
 export function pick<T extends object, Keys extends keyof T>(
@@ -14,4 +14,27 @@ export function pickUser(user: User) {
 
 export function pickApp(app: App) {
   return app
+}
+
+export function pickPrivacy(privacy: Privacy) {
+  return privacy
+}
+
+export function pickTerms(terms: Terms) {
+  return terms
+}
+
+export function pickBilling(billing: Billing) {
+  return billing
+}
+
+export function pickMeta(meta: Meta) {
+  return meta
+}
+
+export function pickAppWithMeta(appWithMeta: AppWithMeta) {
+  return {
+    ...pickApp(appWithMeta),
+    meta: appWithMeta.meta ? pickMeta(appWithMeta.meta) : null,
+  }
 }

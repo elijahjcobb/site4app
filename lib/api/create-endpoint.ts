@@ -12,12 +12,10 @@ export function createEndpoint<T extends Record<string, unknown>>(
       return await handler(req, context)
     } catch (e) {
       if (e instanceof APIError) {
+        console.error(e.toString())
         return e.toResponse()
       } else {
-        if (e instanceof Error) {
-        } else {
-          console.error(e)
-        }
+        console.error(e)
         return new APIError({
           statusCode: 500,
           code: "internal_server_error",

@@ -27,42 +27,36 @@ function fetchItem<T extends Table>(table: string, id: string): Promise<T> {
   }
 }
 
-export function fetchAppForOwner(id: string): Promise<App> {
-  return fetchItem<App>("app", id)
+export async function fetchAppForOwner(id: string, user: User): Promise<App> {
+  try {
+    return await prisma.app.findFirstOrThrow({
+      where: {
+        id,
+        owner_id: user.id,
+      },
+    })
+  } catch {
+    throw new APIError({
+      statusCode: 404,
+      code: "not_found",
+      message: `Can not find app with id: '${id}'`,
+    })
+  }
 }
 
-export async function fetchAppMetaForOwner(
-  id: string,
-  user: User
-): Promise<Meta> {
-  return fetchItem<Meta>("meta", id)
-}
-
-export async function fetchContactForOwner(
-  id: string,
-  user: User
-): Promise<Contact> {
+export async function fetchContact(id: string): Promise<Contact> {
   return fetchItem<Contact>("contact", id)
 }
 
-export async function fetchSupportForOwner(
-  id: string,
-  user: User
-): Promise<Support> {
+export async function fetchSupport(id: string): Promise<Support> {
   return fetchItem<Support>("support", id)
 }
 
-export async function fetchTermsForOwner(
-  id: string,
-  user: User
-): Promise<Terms> {
+export async function fetchTerms(id: string): Promise<Terms> {
   return fetchItem<Terms>("terms", id)
 }
 
-export async function fetchPrivacyForOwner(
-  id: string,
-  user: User
-): Promise<Privacy> {
+export async function fetchPrivacy(id: string): Promise<Privacy> {
   return fetchItem<Privacy>("privacy", id)
 }
 
@@ -77,19 +71,24 @@ export async function fetchAppWithMetaForOwner(
   id: string,
   user: User
 ): Promise<AppWithMeta> {
-  const res = await prisma.app.findFirst({
-    where: { id },
-    include: {
-      meta: true,
-    },
-  })
-  if (!res)
+  try {
+    return await prisma.app.findFirstOrThrow({
+      where: { id, owner_id: user.id },
+      include: {
+        meta: true,
+      },
+    })
+  } catch {
     throw new APIError({
       statusCode: 404,
       code: "not_found",
-      message: `Cannot find app and metadata with id: '${id}'`,
+      message: `Can not find app and metadata with id: '${id}'`,
     })
-  return res
+  }
+}
+
+export async function fetchMeta(appId: string): Promise<Meta> {
+  return fetchItem<Meta>("meta", appId)
 }
 
 export function fetchBillingForAppId(appId: string): Promise<Billing> {

@@ -106,10 +106,7 @@ export async function verifyUser(
   return user
 }
 
-export async function verifyApp(
-  req: NextRequest,
-  userId: string
-): Promise<App> {
+export async function verifyApp(req: NextRequest, user: User): Promise<App> {
   const appId =
     req.nextUrl.searchParams.get("appId") || req.cookies.get("appId")?.value
   if (typeof appId !== "string" || !appId)
@@ -123,7 +120,7 @@ export async function verifyApp(
   const app = await prisma.app.findFirst({
     where: {
       id: appId,
-      owner_id: userId,
+      owner_id: user.id,
     },
   })
 

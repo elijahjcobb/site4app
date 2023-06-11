@@ -1,6 +1,7 @@
 export const API_ERROR_CODES = [
   "internal_server_error",
   "not_found",
+  "already_exists",
   "rate_limit",
   "invalid_body",
   "invalid_search_parameters",
@@ -15,4 +16,5 @@ export const API_ERROR_CODES = [
   "invalid_email_or_password",
   "resource_limit_reached",
   "invalid_regex",
+  "external_error",
 ] as const

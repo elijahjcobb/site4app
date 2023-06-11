@@ -36,10 +36,11 @@ export class APIError extends Error {
     return `(${this.statusCode}) ${this.code}: ${this.message}`
   }
 
-  public toJSON(): { code: APIErrorCode; message: string } {
+  public toJSON(): { code: APIErrorCode; message: string; statusCode: number } {
     return {
       code: this.code,
       message: this.message,
+      statusCode: this.statusCode,
     }
   }
 
