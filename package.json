@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "env": "vercel env pull .env"
+    "env": "vercel env pull .env",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@element-ts/krypton": "^0.3.3",
