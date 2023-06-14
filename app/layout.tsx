@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import { NextAuthProvider } from "./auth-provider";
 
 export const metadata: Metadata = {
 	title: {
@@ -43,7 +44,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
 					)}
 				>
 					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-						{children}
+						<NextAuthProvider>
+							{children}
+						</NextAuthProvider>
 						<Toaster />
 						<TailwindIndicator />
 						<Analytics />

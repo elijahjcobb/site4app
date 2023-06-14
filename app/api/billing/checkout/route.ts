@@ -7,10 +7,11 @@ import {
   CHECKOUT_SUCCESS_URL,
 } from "@/lib/api/billing/urls"
 import { createEndpoint } from "@/lib/api/create-endpoint"
-import { verifyApp, verifyUser } from "@/lib/api/token"
+import { verifyApp } from "@/lib/api/token"
+import { verifyUser } from "@/lib/api/verify-user"
 
 export const GET = createEndpoint(async (req) => {
-  const user = await verifyUser(req)
+  const user = await verifyUser()
   const app = await verifyApp(req, user)
 
   const prices = await stripe.prices.list({

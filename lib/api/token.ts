@@ -86,26 +86,6 @@ export async function tokenVerifyRequestForType(
   return tokenVerifyString(token)
 }
 
-export async function verifyUser(
-  req: NextRequest,
-  config?: {
-    allowUnverified?: boolean
-  }
-): Promise<User> {
-  const { id } = await tokenVerifyRequestForType(req)
-  const user = await prisma.user.findUnique({
-    where: { id },
-  })
-  if (!user) {
-    throw new APIError({
-      statusCode: 401,
-      code: "authenticated_user_not_valid",
-      message: "Authenticated user is invalid.",
-    })
-  }
-  return user
-}
-
 export async function verifyApp(req: NextRequest, user: User): Promise<App> {
   const appId =
     req.nextUrl.searchParams.get("appId") || req.cookies.get("appId")?.value

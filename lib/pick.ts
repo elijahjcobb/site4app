@@ -8,8 +8,28 @@ export function pick<T extends object, Keys extends keyof T>(
   return _.pick(object, keys)
 }
 
-export function pickUser(user: User) {
-  return pick(user, "id", "email", "name", "created_at", "updated_at")
+export type ClientUser = Pick<
+  User,
+  | "id"
+  | "email"
+  | "name"
+  | "image"
+  | "emailVerified"
+  | "created_at"
+  | "updated_at"
+>
+
+export function pickUser(user: User): ClientUser {
+  return pick(
+    user,
+    "id",
+    "email",
+    "name",
+    "emailVerified",
+    "image",
+    "created_at",
+    "updated_at"
+  )
 }
 
 export function pickApp(app: App) {

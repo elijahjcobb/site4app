@@ -4,8 +4,8 @@ import { T } from "@elijahjcobb/typr"
 
 import { APIError } from "@/lib/api-error"
 import { createEndpoint } from "@/lib/api/create-endpoint"
-import { verifyApp, verifyUser } from "@/lib/api/token"
 import { verifyBody } from "@/lib/api/verify-body"
+import { verifyUser } from "@/lib/api/verify-user"
 import { assertNonEmpty } from "@/lib/assert-filled"
 import { pickApp, pickMeta } from "@/lib/pick"
 import { AppleAppResponse, appleAppToAppMeta } from "@/lib/types/app"
@@ -22,7 +22,7 @@ export const POST = createEndpoint(async (req) => {
   assertNonEmpty(appId, "appId")
   assertNonEmpty(appleId, "appleId")
 
-  const user = await verifyUser(req)
+  const user = await verifyUser()
 
   const app = await prisma.app.findUniqueOrThrow({
     where: {
