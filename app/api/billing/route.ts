@@ -7,7 +7,7 @@ import { verifyUser } from "@/lib/api/verify-user"
 import { pickBilling } from "@/lib/pick"
 
 export const GET = createEndpoint(async (req) => {
-  const user = await verifyUser()
+  const user = await verifyUser(req)
   const app = await verifyApp(req, user)
   const billing = await fetchBillingForAppId(app.id)
   return NextResponse.json(pickBilling(billing))

@@ -7,7 +7,7 @@ import { verifyUser } from "@/lib/api/verify-user"
 import { pickApp, pickMeta } from "@/lib/pick"
 
 export const GET = createEndpoint(async (req) => {
-  const user = await verifyUser()
+  const user = await verifyUser(req)
   const app = await verifyApp(req, user)
   const meta = await fetchMeta(app.id)
   return NextResponse.json({ app: pickApp(app), meta: pickMeta(meta) })

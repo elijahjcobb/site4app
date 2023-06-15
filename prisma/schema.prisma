@@ -66,6 +66,7 @@ model Token {
   name          String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  last_used_at DateTime?
   owner_id String
   owner User @relation(fields: [owner_id], references: [id])
 }

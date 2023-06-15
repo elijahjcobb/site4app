@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 import { verifyUser } from "@/lib/api/verify-user"
 
 export const GET = createEndpoint(async (req) => {
-	const user = await verifyUser();
+	const user = await verifyUser(req);
 	const app = await verifyApp(req, user);
 	const terms = await fetchTerms(app.id);
 	return NextResponse.json(pickTerms(terms));
@@ -20,7 +20,7 @@ export const POST = createEndpoint(async (req) => {
 		value: T.string()
 	}));
 
-	const user = await verifyUser();
+	const user = await verifyUser(req);
 	const app = await verifyApp(req, user);
 
 	const privacy = await prisma.terms.upsert({

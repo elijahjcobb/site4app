@@ -61,6 +61,11 @@ export function pickMeta(meta: Meta) {
   return meta
 }
 
+export type ClientToken = Pick<
+  Token,
+  "id" | "name" | "owner_id" | "last_used_at" | "created_at" | "updated_at"
+>
+
 export function pickToken(token: Token) {
   return token
 }

@@ -11,7 +11,7 @@ import { verifyApp } from "@/lib/api/token"
 import { verifyUser } from "@/lib/api/verify-user"
 
 export const GET = createEndpoint(async (req) => {
-  const user = await verifyUser()
+  const user = await verifyUser(req)
   const app = await verifyApp(req, user)
 
   const prices = await stripe.prices.list({

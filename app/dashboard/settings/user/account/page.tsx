@@ -1,7 +1,11 @@
 import { Separator } from "@/components/ui/separator"
-import { AccountInfo } from "./info";
+import { ReadOnlyEntity } from "@/components/client/read-only-entity";
+import { getUserFromServerSession } from "@/lib/api/verify-user";
 
-export default function SettingsProfilePage() {
+export default async function SettingsProfilePage() {
+
+	const user = await getUserFromServerSession();
+
 	return (
 		<div className="space-y-6">
 			<div>
@@ -11,7 +15,9 @@ export default function SettingsProfilePage() {
 				</p>
 			</div>
 			<Separator />
-			<AccountInfo />
+			<ReadOnlyEntity title='Name' description="The name that will be displayed on your profile and in emails." value={user.name} />
+			<ReadOnlyEntity title='Email' description="The email associated with your account." value={user.email} />
+			<ReadOnlyEntity title='User ID' description="The identifier for your account." mono value={user.id} />
 		</div>
 	)
 }

@@ -22,7 +22,7 @@ export const POST = createEndpoint(async (req) => {
   assertNonEmpty(appId, "appId")
   assertNonEmpty(appleId, "appleId")
 
-  const user = await verifyUser()
+  const user = await verifyUser(req)
 
   const app = await prisma.app.findUniqueOrThrow({
     where: {

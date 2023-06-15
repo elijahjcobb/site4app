@@ -5,8 +5,8 @@ import { fetchAppForOwner } from "@/lib/api/fetchers"
 import { verifyUser } from "@/lib/api/verify-user"
 import { pickApp } from "@/lib/pick"
 
-export const GET = createEndpoint<{ id: string }>(async (_, context) => {
-  const user = await verifyUser()
+export const GET = createEndpoint<{ id: string }>(async (req, context) => {
+  const user = await verifyUser(req)
   const app = await fetchAppForOwner(context.params.id, user)
   const res = NextResponse.json(pickApp(app))
   res.cookies.set("appId", app.id)

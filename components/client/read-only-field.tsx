@@ -1,3 +1,4 @@
+"use client";
 import { Copy } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import clsx from "clsx";

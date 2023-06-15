@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 import { ReadOnlyField } from "./read-only-field";
-import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ReadOnlyEntity({

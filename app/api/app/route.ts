@@ -13,13 +13,13 @@ import { assertNonEmpty } from "@/lib/assert-filled"
 import { pickApp } from "@/lib/pick"
 
 export const GET = createEndpoint(async (req) => {
-  const user = await verifyUser()
+  const user = await verifyUser(req)
   const app = await verifyApp(req, user)
   return NextResponse.json(pickApp(app))
 })
 
 export const POST = createEndpoint(async (req) => {
-  const user = await verifyUser(req);
+  const user = await verifyUser(req)
 
   await verifyRateLimit(req, user, "10s")
 

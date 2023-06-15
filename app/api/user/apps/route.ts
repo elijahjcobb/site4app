@@ -6,7 +6,7 @@ import { verifyUser } from "@/lib/api/verify-user"
 import { pickApp } from "@/lib/pick"
 
 export const GET = createEndpoint(async (req) => {
-  const user = await verifyUser()
+  const user = await verifyUser(req)
   const apps = await prisma.app.findMany({
     where: {
       owner_id: user.id,

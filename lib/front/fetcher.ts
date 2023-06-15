@@ -25,9 +25,6 @@ export async function fetcher<T extends object>({
     method,
     body: bodyString,
     credentials: "same-origin",
-    headers: {
-      authorization: `Bearer ${getCookie("authorization")}`,
-    },
   })
   const resBody = await res.json()
   if (res.ok) {
