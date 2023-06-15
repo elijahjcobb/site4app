@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from "react"
-import { useSession } from "next-auth/react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { signOut, useSession } from "next-auth/react"
 
 import type { ClientUser } from "../pick"
 
 export function useUser(): {
   status: "authenticated" | "unauthenticated" | "loading"
   user: ClientUser | null
+  signOut: () => void
 } {
   const { data, status } = useSession()
+  const router = useRouter()
   const [user, setUser] = useState<ClientUser | null>(null)
   const isLoading = useRef(false)
 
@@ -26,5 +29,10 @@ export function useUser(): {
       })
   }, [data])
 
-  return { status, user }
+  const handleSignOut = useCallback(() => {
+    signOut()
+    router.push("/user")
+  }, [router])
+
+  return { status, user, signOut: handleSignOut }
 }

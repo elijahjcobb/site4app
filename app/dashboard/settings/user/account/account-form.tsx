@@ -32,6 +32,8 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form"
+import { useUser } from "@/lib/front/use-user"
+import { useEffect } from "react"
 
 const languages = [
 	{ label: "English", value: "en" },
@@ -54,27 +56,30 @@ const accountFormSchema = z.object({
 		.max(30, {
 			message: "Name must not be longer than 30 characters.",
 		}),
-	dob: z.date({
-		required_error: "A date of birth is required.",
-	}),
-	language: z.string({
-		required_error: "Please select a language.",
-	}),
+	email: z.string().email(),
+	id: z.string(),
 })
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<AccountFormValues> = {
-	// name: "Your name",
-	// dob: new Date("2023-01-23"),
-}
-
 export function AccountForm() {
+
+	const { user } = useUser();
+
 	const form = useForm<AccountFormValues>({
 		resolver: zodResolver(accountFormSchema),
-		defaultValues,
+		defaultValues: {
+			id: user?.id,
+			email: user?.email ?? undefined,
+			name: user?.name,
+		},
 	})
+
+	useEffect(() => {
+		if (user?.name) form.setValue("name", user.name)
+		if (user?.id) form.setValue("id", user.id)
+		if (user?.email) form.setValue("email", user.email)
+	}, [user, form]);
 
 	function onSubmit(data: AccountFormValues) {
 		toast({
@@ -108,6 +113,38 @@ export function AccountForm() {
 					)}
 				/>
 				<FormField
+					control={form.control}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<Input disabled placeholder="Your email" {...field} />
+							</FormControl>
+							<FormDescription>
+								This is the email that will be used for your account.
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="id"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>User ID</FormLabel>
+							<FormControl>
+								<Input disabled placeholder="Your ID" {...field} />
+							</FormControl>
+							<FormDescription>
+								This is the ID that will be used for your account.
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				{/* <FormField
 					control={form.control}
 					name="dob"
 					render={({ field }) => (
@@ -211,7 +248,7 @@ export function AccountForm() {
 							<FormMessage />
 						</FormItem>
 					)}
-				/>
+				/> */}
 				<Button type="submit">Update account</Button>
 			</form>
 		</Form>

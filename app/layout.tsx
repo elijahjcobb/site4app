@@ -45,7 +45,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
 				>
 					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 						<NextAuthProvider>
-							{children}
+							<main>
+								{children}
+							</main>
 						</NextAuthProvider>
 						<Toaster />
 						<TailwindIndicator />

@@ -1,3 +1,13 @@
-export default function UserAccountSettingsPage(): JSX.Element {
-	return <div>features</div>
+import { Separator } from "@/components/ui/separator";
+
+export default function AppSettingsFeaturesPage(): JSX.Element {
+	return <div className="space-y-6">
+		<div>
+			<h3 className="text-lg font-medium">Features</h3>
+			<p className="text-sm text-muted-foreground">
+				Enable and disable features for your app.
+			</p>
+		</div>
+		<Separator />
+	</div>
 }

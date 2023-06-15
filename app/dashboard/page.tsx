@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picket"
-import { Overview } from "@/components/dashboard/overview"
+import { ImpressionsGraph, Overview } from "@/components/dashboard/overview"
 import { RecentSales } from "@/components/dashboard/recent-sales"
 
 
@@ -24,13 +24,6 @@ export default function DashboardPage() {
 		<div className="flex-1 space-y-4 p-8 pt-6">
 			<div className="flex items-center justify-between space-y-2">
 				<h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-				<div className="flex items-center space-x-2">
-					<CalendarDateRangePicker />
-					<Button size="sm">
-						<Download className="mr-2 h-4 w-4" />
-						Download
-					</Button>
-				</div>
 			</div>
 			<Tabs defaultValue="overview" className="space-y-4">
 				<TabsContent value="overview" className="space-y-4">
@@ -38,7 +31,7 @@ export default function DashboardPage() {
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 								<CardTitle className="text-sm font-medium">
-									Total Revenue
+									Pipeline
 								</CardTitle>
 								<DollarSign className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
@@ -52,9 +45,9 @@ export default function DashboardPage() {
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 								<CardTitle className="text-sm font-medium">
-									Subscriptions
+									Direct Leads
 								</CardTitle>
-								<Users className="h-4 w-4 text-muted-foreground" />
+								<CreditCard className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">+2350</div>
@@ -65,8 +58,8 @@ export default function DashboardPage() {
 						</Card>
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-								<CardTitle className="text-sm font-medium">Sales</CardTitle>
-								<CreditCard className="h-4 w-4 text-muted-foreground" />
+								<CardTitle className="text-sm font-medium">Impressions</CardTitle>
+								<Activity className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">+12,234</div>
@@ -78,9 +71,9 @@ export default function DashboardPage() {
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 								<CardTitle className="text-sm font-medium">
-									Active Now
+									Contacts
 								</CardTitle>
-								<Activity className="h-4 w-4 text-muted-foreground" />
+								<Users className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">+573</div>
@@ -93,7 +86,10 @@ export default function DashboardPage() {
 					<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
 						<Card className="col-span-4">
 							<CardHeader>
-								<CardTitle>Overview</CardTitle>
+								<CardTitle>Pipeline</CardTitle>
+								<CardDescription>
+									The potential pipeline you have generated for your app.
+								</CardDescription>
 							</CardHeader>
 							<CardContent className="pl-2">
 								<Overview />
@@ -101,13 +97,13 @@ export default function DashboardPage() {
 						</Card>
 						<Card className="col-span-3">
 							<CardHeader>
-								<CardTitle>Recent Sales</CardTitle>
+								<CardTitle>Impressions</CardTitle>
 								<CardDescription>
-									You made 265 sales this month.
+									You had 20398 impressions this month.
 								</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<RecentSales />
+								<ImpressionsGraph />
 							</CardContent>
 						</Card>
 					</div>

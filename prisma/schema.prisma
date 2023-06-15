@@ -58,7 +58,18 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   apps App[]
+  tokens Token[]
 }
+
+model Token {
+  id            String    @id @default(uuid())
+  name          String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  owner_id String
+  owner User @relation(fields: [owner_id], references: [id])
+}
+
 model App {
   id String @id @default(uuid())
   enable_contact Boolean @default(false)

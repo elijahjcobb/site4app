@@ -1,10 +1,13 @@
+import { NextRequest } from "next/server"
 import { User, prisma } from "@/db"
 import { getServerSession } from "next-auth"
 
 import { APIError } from "@/lib/api-error"
 import { authOptions } from "@/lib/auth"
 
-export async function verifyUser(): Promise<User> {
+export async function verifyUser(req?: NextRequest): Promise<User> {
+  console.log({ req })
+
   const session = await getServerSession(authOptions)
 
   if (!session)

@@ -33,6 +33,10 @@ const userSettingsItems = [
 		title: "Account",
 		href: "/user/account",
 	},
+	{
+		title: "Tokens",
+		href: "/user/tokens",
+	},
 ]
 
 interface SettingsLayoutProps {
