@@ -6,7 +6,7 @@ import Link from "next/link";
 export const LoginButton = () => {
 
 	return (
-		<button style={{ marginRight: 10 }} onClick={() => signIn('github', { callbackUrl: "/dashboard" })}>
+		<button style={{ marginRight: 10 }} onClick={() => signIn('github')}>
 			Sign in
 		</button>
 	);
