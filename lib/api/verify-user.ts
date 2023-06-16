@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { NextRequest } from "next/server"
-import { App, User, prisma } from "@/db"
+import { AppWithMeta, User, prisma } from "@/db"
 import { getServerSession } from "next-auth"
 
 import { APIError } from "@/lib/api-error"
@@ -85,7 +85,7 @@ export async function getUserFromServerSession(): Promise<User> {
 
 export async function getAppFromServerSession(
   user?: User | string
-): Promise<App> {
+): Promise<AppWithMeta> {
   const appId = cookies().get("appId")?.value
 
   let userId: string
@@ -94,17 +94,25 @@ export async function getAppFromServerSession(
   else if (user) userId = user.id
   else userId = await getUserIdFromServerSession()
 
+  let app: AppWithMeta
+
   if (!appId)
-    throw new APIError({
-      statusCode: 401,
-      code: "authenticated_app_not_valid",
-      message: "Invalid appId.",
+    app = await prisma.app.findFirstOrThrow({
+      where: {
+        owner_id: userId,
+      },
+      include: {
+        meta: true,
+      },
     })
 
-  const app = await prisma.app.findFirstOrThrow({
+  app = await prisma.app.findFirstOrThrow({
     where: {
       id: appId,
       owner_id: userId,
+    },
+    include: {
+      meta: true,
     },
   })
 
