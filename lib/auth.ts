@@ -29,5 +29,18 @@ export const authOptions: NextAuthOptions = {
 
       return session
     },
+    redirect({ url, baseUrl }) {
+      const origin = new URL(url).origin
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (
+        origin === baseUrl ||
+        origin === "site4.app" ||
+        origin.endsWith(".vercel.app")
+      )
+        return url
+      return baseUrl
+    },
   },
 }

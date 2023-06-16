@@ -4,8 +4,12 @@ import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 
 export const LoginButton = () => {
+
+	const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+	const callbackUrl = vercelUrl ? `https://${vercelUrl}` : "http://localhost:3000"
+
 	return (
-		<button style={{ marginRight: 10 }} onClick={() => signIn('github')}>
+		<button style={{ marginRight: 10 }} onClick={() => signIn('github', { callbackUrl })}>
 			Sign in
 		</button>
 	);
