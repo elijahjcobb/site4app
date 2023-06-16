@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 
 import { createEndpoint } from "@/lib/api/create-endpoint"
 import { fetchMeta } from "@/lib/api/fetchers"
-import { verifyApp, verifyUser } from "@/lib/api/token"
+import { verifyApp } from "@/lib/api/token"
+import { verifyUser } from "@/lib/api/verify-user"
 import { pickApp, pickMeta } from "@/lib/pick"
 
 export const GET = createEndpoint(async (req) => {

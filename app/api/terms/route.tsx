@@ -1,11 +1,12 @@
 import { prisma } from "@/db";
 import { createEndpoint } from "@/lib/api/create-endpoint";
 import { fetchTerms } from "@/lib/api/fetchers";
-import { verifyUser, verifyApp } from "@/lib/api/token";
+import { verifyApp } from "@/lib/api/token";
 import { verifyBody } from "@/lib/api/verify-body";
 import { pickTerms } from "@/lib/pick";
 import { T } from "@elijahjcobb/typr";
 import { NextResponse } from "next/server";
+import { verifyUser } from "@/lib/api/verify-user"
 
 export const GET = createEndpoint(async (req) => {
 	const user = await verifyUser(req);

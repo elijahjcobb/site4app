@@ -18,6 +18,10 @@ const NAV_ITEMS: NavItem[] = [
     href: ""
   },
   {
+    title: "Meta",
+    href: "/meta"
+  },
+  {
     title: "Contacts",
     href: "/contacts"
   },

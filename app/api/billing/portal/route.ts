@@ -6,7 +6,8 @@ import { stripe } from "@/lib/api/billing"
 import { PORTAL_RETURN_URL } from "@/lib/api/billing/urls"
 import { createEndpoint } from "@/lib/api/create-endpoint"
 import { fetchBillingForAppId } from "@/lib/api/fetchers"
-import { verifyApp, verifyUser } from "@/lib/api/token"
+import { verifyApp } from "@/lib/api/token"
+import { verifyUser } from "@/lib/api/verify-user"
 
 export const GET = createEndpoint(async (req) => {
   const user = await verifyUser(req)

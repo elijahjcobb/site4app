@@ -1,4 +1,13 @@
-import { App, AppWithMeta, Billing, Meta, Privacy, Terms, User } from "@/db"
+import {
+  App,
+  AppWithMeta,
+  Billing,
+  Meta,
+  Privacy,
+  Terms,
+  Token,
+  User,
+} from "@/db"
 import _ from "lodash"
 
 export function pick<T extends object, Keys extends keyof T>(
@@ -8,8 +17,28 @@ export function pick<T extends object, Keys extends keyof T>(
   return _.pick(object, keys)
 }
 
-export function pickUser(user: User) {
-  return pick(user, "id", "email", "name", "created_at", "updated_at")
+export type ClientUser = Pick<
+  User,
+  | "id"
+  | "email"
+  | "name"
+  | "image"
+  | "emailVerified"
+  | "created_at"
+  | "updated_at"
+>
+
+export function pickUser(user: User): ClientUser {
+  return pick(
+    user,
+    "id",
+    "email",
+    "name",
+    "emailVerified",
+    "image",
+    "created_at",
+    "updated_at"
+  )
 }
 
 export function pickApp(app: App) {
@@ -30,6 +59,15 @@ export function pickBilling(billing: Billing) {
 
 export function pickMeta(meta: Meta) {
   return meta
+}
+
+export type ClientToken = Pick<
+  Token,
+  "id" | "name" | "owner_id" | "last_used_at" | "created_at" | "updated_at"
+>
+
+export function pickToken(token: Token) {
+  return token
 }
 
 export function pickAppWithMeta(appWithMeta: AppWithMeta) {

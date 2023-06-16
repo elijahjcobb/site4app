@@ -39,10 +39,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { useFetcher } from "@/lib/front/fetcher"
-import { useEffect } from "react"
-import type { App } from "@/db"
-import { getCookie } from "cookies-next"
+import { useCallback, useEffect } from "react"
+import type { AppWithMeta } from "@/db"
+import { getCookie, setCookie } from "cookies-next"
 import { Skeleton } from "../ui/skeleton"
+import { useRouter } from "next/navigation"
 
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
@@ -52,22 +53,30 @@ interface AppSwitcherProps extends PopoverTriggerProps { }
 export default function AppSwitcher({ className }: AppSwitcherProps) {
 	const [open, setOpen] = React.useState(false)
 	const [showNewAppDialog, setShowNewAppDialog] = React.useState(false)
-	const [apps, setApps] = React.useState<App[]>([]);
-	const [selectedApp, setSelectedApp] = React.useState<App | null>(null)
+	const [apps, setApps] = React.useState<AppWithMeta[]>([]);
+	const [selectedApp, setSelectedApp] = React.useState<AppWithMeta | null>(null)
+	const router = useRouter();
 
 	const [fetcher, isLoading] = useFetcher({ initialLoading: true });
 
 	useEffect(() => {
-		fetcher<App[]>({
-			path: "/user/apps",
+		fetcher<AppWithMeta[]>({
+			path: "/user/apps/meta",
 			method: "GET"
 		}).then((apps) => {
 			setApps(apps);
 			const appId = getCookie("appId");
-			const app = apps.find((app) => app.id === appId);
+			const app = apps.find((app) => app.id === appId) ?? apps[0];
 			if (app) setSelectedApp(app);
 		}).catch(console.error);
 	}, [fetcher]);
+
+	const handleSelect = useCallback((app: AppWithMeta) => {
+		setSelectedApp(app)
+		setOpen(false)
+		setCookie("appId", app.id);
+		router.refresh();
+	}, [router]);
 
 	if (isLoading) return <Skeleton className="h-[36px] w-[200px] border border-input" />
 
@@ -85,10 +94,9 @@ export default function AppSwitcher({ className }: AppSwitcherProps) {
 					>
 						<Avatar className="mr-2 h-5 w-5">
 							<AvatarImage
-								src={`https://avatar.vercel.sh/${selectedApp?.id}.png`}
+								src={selectedApp?.meta?.icon ?? `https://avatar.vercel.sh/${selectedApp?.id}.png`}
 								alt={selectedApp?.name}
 							/>
-							<AvatarFallback>SC</AvatarFallback>
 						</Avatar>
 						{selectedApp?.name}
 						<ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
@@ -103,15 +111,12 @@ export default function AppSwitcher({ className }: AppSwitcherProps) {
 								{apps.map((app) => (
 									<CommandItem
 										key={app.id}
-										onSelect={() => {
-											setSelectedApp(app)
-											setOpen(false)
-										}}
+										onSelect={() => handleSelect(app)}
 										className="text-sm"
 									>
 										<Avatar className="mr-2 h-5 w-5">
 											<AvatarImage
-												src={`https://avatar.vercel.sh/${app.id}.png`}
+												src={app.meta?.icon ?? `https://avatar.vercel.sh/${app.id}.png`}
 												alt={app.name}
 											/>
 											<AvatarFallback>SC</AvatarFallback>

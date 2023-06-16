@@ -1,17 +1,23 @@
 import { Separator } from "@/components/ui/separator"
-import { AccountForm } from "./account-form"
+import { ReadOnlyEntity } from "@/components/client/read-only-entity";
+import { getUserFromServerSession } from "@/lib/api/verify-user";
 
-export default function SettingsProfilePage() {
+export default async function SettingsProfilePage() {
+
+	const user = await getUserFromServerSession();
+
 	return (
 		<div className="space-y-6">
 			<div>
 				<h3 className="text-lg font-medium">Profile</h3>
 				<p className="text-sm text-muted-foreground">
-					This is how others will see you on the site.
+					Information about your account.
 				</p>
 			</div>
 			<Separator />
-			<AccountForm />
+			<ReadOnlyEntity title='Name' description="The name that will be displayed on your profile and in emails." value={user.name} />
+			<ReadOnlyEntity title='Email' description="The email associated with your account." value={user.email} />
+			<ReadOnlyEntity title='User ID' description="The identifier for your account." mono value={user.id} />
 		</div>
 	)
 }

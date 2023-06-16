@@ -1,7 +1,7 @@
 import styles from "./index.module.css";
 import { FaChevronDown as Arrow } from "react-icons/fa";
-import { cx } from "#/lib/front/cx";
 import mdStyles from "../markdown-page/index.module.css";
+import { cx } from "@/lib/front/cx";
 
 export interface SupportItemProps {
 	id: string,

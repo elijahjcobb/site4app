@@ -1,10 +1,9 @@
 import { FormEventHandler, useCallback, useRef, useState } from "react";
 import { Page } from "../page";
 import styles from "./index.module.css";
-import { cx } from "#/lib/front/cx";
 import { FaHandSpock } from "react-icons/fa";
 import { useAppData } from "../app-provider";
-import { fetcher } from "#/lib/front/fetcher";
+import { cx } from "@/lib/front/cx";
 
 export function ContactPage() {
 
@@ -22,7 +21,7 @@ export function ContactPage() {
 		const type = typeRef.current?.value;
 		const message = messageRef.current?.value;
 		setHide(true);
-		fetcher({
+		console.log({
 			path: `/contact`,
 			method: "POST",
 			body: {

@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    serverActions: true,
-  },
+  experimental: {},
   images: {
     domains: [
       "is1-ssl.mzstatic.com",
@@ -12,6 +10,7 @@ const nextConfig = {
       "is4-ssl.mzstatic.com",
       "is5-ssl.mzstatic.com",
       "via.placeholder.com",
+      "avatars.githubusercontent.com",
     ],
   },
 }
