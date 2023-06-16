@@ -1,6 +1,6 @@
 import { AppProvider } from "@/components/client/app-provider";
 import { MarkdownPage } from "@/components/client/markdown-page";
-import { MarkdownPageProps, markdownPageStaticPaths, markdownPageStaticProps } from "@/lib/api/markdown-page-props";
+import { MarkdownPageProps, privacyStaticPaths, privacyStaticProps } from "@/lib/api/markdown-page-props";
 
 
 export default function Page(props: MarkdownPageProps) {
@@ -9,5 +9,5 @@ export default function Page(props: MarkdownPageProps) {
 	</AppProvider>
 }
 
-export const getStaticProps = markdownPageStaticProps("privacy");
-export const getStaticPaths = markdownPageStaticPaths("privacy");
+export const getStaticPaths = privacyStaticPaths();
+export const getStaticProps = privacyStaticProps();

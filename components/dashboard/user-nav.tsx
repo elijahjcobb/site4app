@@ -14,21 +14,23 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
-import { useUser } from "@/lib/front/use-user"
+import { useSignOut } from "@/lib/front/use-user"
 import { useMemo } from "react";
+import { useDashboardContext } from "@/app/dashboard/context";
 
 export function UserNav() {
 
-	const { user, signOut } = useUser();
+	const signOut = useSignOut();
+	const { user } = useDashboardContext();
 
-	const initials = useMemo(() => user?.name.split(' ').map((n) => n[0]).join(''), [user]);
+	const initials = useMemo(() => user.name.split(' ').map((n) => n[0]).join(''), [user]);
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button variant="ghost" className="relative h-8 w-8 rounded-full">
 					<Avatar className="h-8 w-8">
-						{user?.image ? <AvatarImage src={user.image} alt={'user profile picture'} /> : null}
+						{user.image ? <AvatarImage src={user.image} alt={'user profile picture'} /> : null}
 						<AvatarFallback>{initials}</AvatarFallback>
 					</Avatar>
 				</Button>
@@ -36,9 +38,9 @@ export function UserNav() {
 			<DropdownMenuContent className="w-56" align="end" forceMount>
 				<DropdownMenuLabel className="font-normal">
 					<div className="flex flex-col space-y-1">
-						<p className="text-sm font-medium leading-none">{user?.name}</p>
+						<p className="text-sm font-medium leading-none">{user.name}</p>
 						<p className="text-xs leading-none text-muted-foreground">
-							{user?.email}
+							{user.email}
 						</p>
 					</div>
 				</DropdownMenuLabel>

@@ -58,10 +58,15 @@ export const clientGetStaticPropsWithFilter: (
       return { notFound: true }
     }
 
+    // @ts-expect-error - just delete the fields we don't need
     delete app.created_at
+    // @ts-expect-error - just delete the fields we don't need
     delete app.updated_at
+    // @ts-expect-error - just delete the fields we don't need
     delete meta.created_at
+    // @ts-expect-error - just delete the fields we don't need
     delete meta.updated_at
+    // @ts-expect-error - just delete the fields we don't need
     delete meta.release_date
 
     return {

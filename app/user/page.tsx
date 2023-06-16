@@ -5,6 +5,7 @@ import {
 	LoginButton,
 	LogoutButton,
 } from "./buttons";
+import Image from "next/image";
 
 export default function Home() {
 
@@ -27,10 +28,10 @@ export default function Home() {
 			</div>
 			<code>{status}</code>
 			{user ? <>
-				<img style={{ width: 100, height: 100 }} src={user.image} alt={user.name} />
 				<p>{user.name}</p>
 				<code>{user.id}</code>
 				<p>{user.email}</p>
+				{user.image ? <Image width={100} height={100} src={user.image} alt={user.name} /> : null}
 			</> : <span>loading...</span>}
 		</main>
 	);

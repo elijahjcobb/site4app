@@ -1,5 +1,5 @@
-import { StripeEvent } from ".";
+import { StripeEvent } from "."
 
 export async function customerCreated(event: StripeEvent): Promise<void> {
-  console.log({ customerCreated: event });
+  console.log({ customerCreated: event })
 }

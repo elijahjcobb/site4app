@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useMemo } from "react";
 import styles from "./index.module.css";
-import { cx } from "#/lib/front/cx";
+import { cx } from "@/lib/front/cx";
 
 export function IPhone({
 	width = 500,

@@ -86,7 +86,7 @@ export async function getUserFromServerSession(): Promise<User> {
 export async function getAppFromServerSession(
   user?: User | string
 ): Promise<App> {
-  const appId = cookies().get("app")?.value
+  const appId = cookies().get("appId")?.value
 
   let userId: string
 

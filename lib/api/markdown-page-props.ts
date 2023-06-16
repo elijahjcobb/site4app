@@ -34,22 +34,29 @@ export const privacyStaticPaths = (): GetStaticPaths => {
 
 export const termsStaticPaths = (): GetStaticPaths => {
   return async () => {
-    const data = await prisma.terms.findMany({
-      where: {
-        app: {
-          enable_terms: true,
+    try {
+      const data = await prisma.terms.findMany({
+        where: {
+          app: {
+            enable_terms: true,
+          },
         },
-      },
-      include: {
-        app: true,
-      },
-    })
+        include: {
+          app: true,
+        },
+      })
 
-    const items = data.filter((v) => v.value !== null)
+      const items = data.filter((v) => v.value !== null)
 
-    return {
-      paths: items.map((row) => ({ params: { slug: row.app.slug } })),
-      fallback: "blocking",
+      return {
+        paths: items.map((row) => ({ params: { slug: row.app.slug } })),
+        fallback: "blocking",
+      }
+    } catch {
+      return {
+        paths: [],
+        fallback: "blocking",
+      }
     }
   }
 }
